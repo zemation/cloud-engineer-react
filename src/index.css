@@ -1,13 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech&family=Share+Tech+Mono&display=swap');
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: lightgrey;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#nav {
+  width: 75vw;
+  display: flex;
+  justify-content: center;
+}
+
+#nav ul {
+  list-style-type: none;
+  position: absolute;
+  top: 0px;
+  display: flex;
+  width: 50%;
+}
+
+#nav li {
+  display: flex;
+  margin: auto;
+  width: 25%;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+}
+
+#jumbo {
+  background-image: url("./images/splash-bg.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 50vh;
+  color: white;
+  width: 100vw;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: "Share Tech", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.card-group {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.card {
+  margin: auto;
+  width: 25vw;
+  background-color: white;
+  box-shadow: 2px 3px 5px rgba(0,0,0,0.5);
+  height: 35vh;
+}
+
+.card-header {
+  width: 100%;
+  text-align: center;
+  font-family: "Share Tech Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.card-img {
+  width: 100%;
+  height: 15vh;
+}
+
+.card-body {
+  padding: 10px;
+}
+
+footer {
+  margin-top: 50px;
+  border-top: 1px solid black;
+  text-align: center;
+  width: 100%;
 }
