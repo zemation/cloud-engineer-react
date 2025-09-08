@@ -54,6 +54,7 @@ a {
   display: flex;
   justify-content: space-around;
   margin-top: 20px;
+  height: 40vh;
 }
 
 .card {
@@ -61,7 +62,7 @@ a {
   width: 25vw;
   background-color: white;
   box-shadow: 2px 3px 5px rgba(0,0,0,0.5);
-  height: 35vh;
+
 }
 
 .card-header {
@@ -70,15 +71,17 @@ a {
   font-family: "Share Tech Mono", monospace;
   font-weight: 400;
   font-style: normal;
+  height: 20%;
 }
 
 .card-img {
   width: 100%;
-  height: 15vh;
+  height: 30%;
 }
 
 .card-body {
   padding: 10px;
+  height: 50%;
 }
 
 footer {
@@ -86,4 +89,16 @@ footer {
   border-top: 1px solid black;
   text-align: center;
   width: 100%;
+}
+
+#social-media {
+  margin: auto;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+#social-media a {
+  margin-left: 20px;
+  margin-right: 20px;
+  color: #000000;
 }
