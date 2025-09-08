@@ -9,6 +9,8 @@ body {
   width: 75vw;
   display: flex;
   justify-content: center;
+  margin: auto;
+  background-color: darkblue;
 }
 
 #nav ul {
@@ -84,6 +86,30 @@ a {
   height: 50%;
 }
 
+#resume {
+  width: 50vw;
+  margin: auto;
+  margin-top: 50px;
+}
+
+#projects {
+  width: 50vw;
+  margin: auto;
+  margin-top: 50px;
+}
+
+#about {
+  width: 50vw;
+  margin: auto;
+  margin-top: 50px;
+}
+
+#avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
 footer {
   margin-top: 50px;
   border-top: 1px solid black;
@@ -101,4 +127,9 @@ footer {
   margin-left: 20px;
   margin-right: 20px;
   color: #000000;
+  padding: 10px;
+}
+
+i:hover {
+  color: darkgray;
 }
