@@ -1,4 +1,5 @@
 import NavBar from "./NavBar"
+import Footer from "./Footer"
 
 const About = () => {
   return (
@@ -19,6 +20,7 @@ const About = () => {
 
 
     </div>
+    <Footer/>
     </>
   )
 }

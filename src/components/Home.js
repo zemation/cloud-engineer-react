@@ -4,8 +4,9 @@ import Footer from "./Footer"
 const Home = () => {
   return(
     <>
+    <Navbar />
     <div id="jumbo">
-      <Navbar />
+
       <div id="j-head">
       <h1>A Cloud Engineer</h1>
       <h2>Certified Cloud and System Administrator</h2>
