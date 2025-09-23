@@ -5,10 +5,9 @@ const Resume = () => {
   return (
     <>
           <NavBar />
-          <div id="resume">
-          <section>
+          <main>
              
-          <article>
+          <section>
             <h2>Bed Bath and Beyond</h2>
             <h4>March 2021 - Present</h4>
             <ul>
@@ -17,9 +16,9 @@ const Resume = () => {
               <li>Advanced Beyond's cloud integration efforts, ensuring compatibility between private and public cloud ecosystems, which improved service offerings.</li>
               <li>Configured Openstack Systems, deploying with Kolla Ansible and running Ceph Storage.</li>
             </ul>
-          </article>
+          </section>
 
-          <article>
+          <section>
             <h2>Ancestry</h2>
             <h4>August 2018 - February 2021</h4>
             <ul>
@@ -28,8 +27,8 @@ const Resume = () => {
               <li>Developed custom internal tools with Python and BASH scripting, automating system management tasks.</li>
               <li>Contributed to Ancestry's mission of connecting families by ensuring peak system performance.</li>
             </ul>
-          </article>
-          <article>
+          </section>
+          <section>
             <h2>Bluehost</h2>
             <h4>October 2012 - October 2017</h4>
             <ul>
@@ -38,7 +37,6 @@ const Resume = () => {
               <li>Employed advanced recovery techniques to minimize data loss and downtime during critical incidents.</li>
               <li>Managed security and compliance efforts, maintaining a secure hosting environment by addressing abusive accounts.</li>
             </ul>
-          </article>
           </section>
 
           <section>
@@ -58,9 +56,7 @@ const Resume = () => {
             <h2>Skills</h2>
             <p>Cloud Computing, Linux Administration, Problem Analysis, Containerization, Troubleshooting, Root Cause Analysis, Communication, Infrastructure as a Service (IaaS), Technical Documentation, Analytical Skills, Front-End Development, Linux, Microsoft Windows, Amazon Web Services, Google Cloud Platform, Openstack, System Administration, Technical Support, BASH, Python, Computer Hardware, PowerShell, Bootstrap, Problem Solving, New Relic, Kubernetes, Docker, SSH, API, Git, Packer, Cloud Panel, CPanel, NodeJS, Django, Load Balancers, </p>
           </section>
-
-
-          </div>
+          </main>
           <Footer/>
     </>
   )

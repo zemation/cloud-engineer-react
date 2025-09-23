@@ -5,14 +5,12 @@ const Home = () => {
   return(
     <>
     <Navbar />
-    <div id="jumbo">
+    <main>
+      <div id="header">
 
-      <div id="j-head">
       <h1>A Cloud Engineer</h1>
       <h2>Certified Cloud and System Administrator</h2>
-      </div>
     </div>
-
     <div className="card-group">
       <div className="card">
         <div className="card-header">
@@ -44,10 +42,14 @@ const Home = () => {
           <img className="card-img" src="/images/web-dev.jpg" alt="Web Dev" />
         </div>
         <div className="card-body">
-          <p>Two decades of experience with HTML and CSS, recently adding the Bootstrap framework and now building on JavaScript and NodeJS.</p>
+          <p>Two decades of experience with HTML and CSS, recently adding the Bootstrap framework and now building on JavaScript and NodeJS including this website that was build in ReactJS.</p>
         </div>
       </div>
-    </div>
+      </div>
+      </main>
+
+
+    
     <Footer />
  
     </>
