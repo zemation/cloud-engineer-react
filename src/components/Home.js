@@ -1,9 +1,10 @@
+import {Container} from 'react-bootstrap'
 import Navigation from "./Navigation"
 import Footer from "./Footer"
 
 const Home = () => {
   return(
-    <>
+    <Container fluid>
     <Navigation />
     <main>
       <div id="header">
@@ -52,7 +53,7 @@ const Home = () => {
     
     <Footer />
  
-    </>
+    </Container>
   )
 }
 

@@ -1,8 +1,9 @@
-import {  Container, Navbar, Nav } from 'react-bootstrap'
+import {  Container, Row, Navbar, Nav } from 'react-bootstrap'
 
 const Footer = () => {
   return (
-    <footer className="fixed-bottom">
+    <Container className="fixed-bottom">
+      <Row>
       <Navbar className="justify-content-center">
 
         <Nav>
@@ -12,11 +13,17 @@ const Footer = () => {
         <Nav.Link to="https://www.freecodecamp.org/zemationx" target="_blank"><i class="fa-brands fa-free-code-camp"></i></Nav.Link>
       </Nav>
 
-      <p>&copy; 2025 acloudengineer.com</p>      
+      
     </Navbar>
+    </Row>
+    <Row className="text-center">
+      <p>&copy; 2025 acloudengineer.com</p>      
+    </Row>
     
 
-    </footer>
+
+    </Container>
+
   )
 }
 
