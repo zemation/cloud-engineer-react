@@ -1,18 +1,21 @@
-import { Link } from 'react-router-dom'
+import {  Container, Navbar, Nav } from 'react-bootstrap'
 
 const Footer = () => {
   return (
-    <footer>
-      <div id="social-media">
-        <Link to="http://www.github.com/zemation" target="_blank"><i className="fa-brands fa-linkedin"></i></Link>
-        <Link to="https://www.linkedin.com/in/robertbrodgers" target="_blank"><i className="fa-brands fa-github"></i></Link>
-        <Link to="https://codepen.io/zemation" target="_blank"><i class="fa-brands fa-codepen"></i></Link>
-        <Link to="https://www.freecodecamp.org/zemationx" target="_blank"><i class="fa-brands fa-free-code-camp"></i></Link>
+    <footer className="fixed-bottom">
+      <Navbar className="justify-content-center">
 
-      </div>
-      <div>
-        <p>Copyright 2025 acloudengineer.com</p>
-      </div>
+        <Nav>
+        <Nav.Link to="http://www.github.com/zemation" target="_blank"><i className="fa-brands fa-linkedin"></i></Nav.Link>
+        <Nav.Link to="https://www.linkedin.com/in/robertbrodgers" target="_blank"><i className="fa-brands fa-github"></i></Nav.Link>
+        <Nav.Link to="https://codepen.io/zemation" target="_blank"><i class="fa-brands fa-codepen"></i></Nav.Link>
+        <Nav.Link to="https://www.freecodecamp.org/zemationx" target="_blank"><i class="fa-brands fa-free-code-camp"></i></Nav.Link>
+      </Nav>
+
+      <p>&copy; 2025 acloudengineer.com</p>      
+    </Navbar>
+    
+
     </footer>
   )
 }

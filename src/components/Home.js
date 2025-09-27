@@ -1,10 +1,10 @@
-import Navbar from "./NavBar"
+import Navigation from "./Navigation"
 import Footer from "./Footer"
 
 const Home = () => {
   return(
     <>
-    <Navbar />
+    <Navigation />
     <main>
       <div id="header">
 

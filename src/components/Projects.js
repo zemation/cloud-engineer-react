@@ -1,10 +1,10 @@
-import NavBar from "./NavBar"
+import Navigation from "./Navigation"
 import Footer from "./Footer"
 
 const Projects = () => {
   return (
     <>
-      <NavBar />
+      <Navigation />
       <main>
       <section>
         <h1>Kubernetes</h1>

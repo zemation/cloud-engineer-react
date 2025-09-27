@@ -1,10 +1,10 @@
-import NavBar from "./NavBar"
+import Navigation from "./Navigation"
 import Footer from "./Footer"
 
 const About = () => {
   return (
     <>
-    <NavBar />
+    <Navigation />
     <main>
       {/*
       <div>            
