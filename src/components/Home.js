@@ -1,4 +1,6 @@
 import {Container} from 'react-bootstrap'
+import Card from 'react-bootstrap/Card'
+import CardGroup from 'react-bootstrap/CardGroup'
 import Navigation from "./Navigation"
 import Footer from "./Footer"
 
@@ -6,53 +8,46 @@ const Home = () => {
   return(
     <>
         <Navigation />
-    <Container fluid>
+    <Container>
 
-    <main>
-      <div id="header">
+    <div className="text-center">
 
       <h1>A Cloud Engineer</h1>
       <h2>Certified Cloud and System Administrator</h2>
     </div>
-    <div className="card-group">
-      <div className="card">
-        <div className="card-header">
-          <h1>SysOps Admin</h1>
-        </div>
-        <div>
-          <img className="card-img" src="/images/desk-admin.jpg" alt="Server Rack" />
-        </div>
-        <div className="card-body">
-          <p>Certified Windows Support Specialist and Linux System Administrator. Working with PowerShell and BASH scripting.</p>
-        </div>
-      </div>
-      <div className="card">
-        <div className="card-header">
-          <h1>Cloud Engineer</h1>          
-        </div>
-        <div>
-          <img className="card-img" src="/images/cloud-servers.jpg" alt="Cloud Engineer" />
-        </div>
-        <div className="card-body">
-          <p>Certified Cloud Professional, Systems Analysis and Site Reliability.</p>
-        </div>
-      </div>
-      <div className="card">
-        <div className="card-header">
-          <h1>Web Developer</h1>          
-        </div>
-        <div>
-          <img className="card-img" src="/images/web-dev.jpg" alt="Web Dev" />
-        </div>
-        <div className="card-body">
-          <p>Two decades of experience with HTML and CSS, recently adding the Bootstrap framework and now building on JavaScript and NodeJS including this website that was build in ReactJS.</p>
-        </div>
-      </div>
-      </div>
-      </main>
+      <CardGroup>
+      <Card style={{ width: '18rem' }}>
+        <Card.Header >SysOps Admin</Card.Header>
+        
+        <Card.Body>
+          <Card.Img src="/images/desk-admin.jpg" />
+          <Card.Text><p>Certified Windows Support Specialist and Linux System Administrator. Working with PowerShell and BASH scripting.</p></Card.Text>
+
+        </Card.Body>
+      </Card>
+      <Card style={{ width: '18rem' }}>
+        <Card.Header>Cloud Engineer</Card.Header>
+        
+        <Card.Body>
+          <Card.Img src="/images/cloud-servers.jpg" />
+          <Card.Text><p>Certified Cloud Professional, Systems Analysis and Site Reliabilityg.</p></Card.Text>
+
+        </Card.Body>
+      </Card>
+      <Card style={{ width: '18rem' }}>
+        <Card.Header>SysOps Admin</Card.Header>
+        
+        <Card.Body>
+          <Card.Img src="/images/web-dev.jpg" />
+          <Card.Text><p>Two decades of experience with HTML and CSS, recently adding the Bootstrap framework and now building on JavaScript and NodeJS including this website that was build in ReactJS.</p></Card.Text>
+
+        </Card.Body>
+      </Card>
+      </CardGroup>
+     </Container>
 
 
-    </Container>
+
     <Footer />
  
     </>

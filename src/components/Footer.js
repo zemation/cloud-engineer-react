@@ -2,15 +2,23 @@ import {  Container, Row, Navbar, Nav } from 'react-bootstrap'
 
 const Footer = () => {
   return (
-    <Container bg="dark" className="sticky-bottom">
+    <Container fluid className="sticky-bottom text-white bg-dark">
       <Row>
-      <Navbar className="justify-content-center">
+      <Navbar bg="dark" variant="dark" className="justify-content-center">
 
         <Nav>
-        <Nav.Link to="http://www.github.com/zemation" target="_blank"><i className="fa-brands fa-linkedin"></i></Nav.Link>
-        <Nav.Link to="https://www.linkedin.com/in/robertbrodgers" target="_blank"><i className="fa-brands fa-github"></i></Nav.Link>
-        <Nav.Link to="https://codepen.io/zemation" target="_blank"><i class="fa-brands fa-codepen"></i></Nav.Link>
-        <Nav.Link to="https://www.freecodecamp.org/zemationx" target="_blank"><i class="fa-brands fa-free-code-camp"></i></Nav.Link>
+          <Nav.Item>
+            <Nav.Link to="http://www.github.com/zemation" target="_blank"><i className="fa-brands fa-linkedin"></i></Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link to="https://www.linkedin.com/in/robertbrodgers" target="_blank"><i className="fa-brands fa-github"></i></Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link to="https://codepen.io/zemation" target="_blank"><i class="fa-brands fa-codepen"></i></Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link to="https://www.freecodecamp.org/zemationx" target="_blank"><i class="fa-brands fa-free-code-camp"></i></Nav.Link>
+          </Nav.Item>
       </Nav>
 
       

@@ -1,3 +1,4 @@
+import { Container } from 'react-bootstrap'
 import Navigation from "./Navigation"
 import Footer from "./Footer"
 
@@ -5,7 +6,7 @@ const Projects = () => {
   return (
     <>
       <Navigation />
-      <main>
+      <Container className="p-4 shadow-lg">
       <section>
         <h1>Kubernetes</h1>
         <p>Recently I picked up three Dell Optiplex mini systems that have been configured for a Kubernetes cluster. This has provided me experience with setting up the cluster both via Kubernetes the Hard Way and using kubeadm init.  And also taught me much in the way planning ahead as I've worked out issues that arise on new clusters.</p>
@@ -33,7 +34,7 @@ const Projects = () => {
       
       </section>
       
-    </main>
+    </Container>
     <Footer/>
     </>
   )

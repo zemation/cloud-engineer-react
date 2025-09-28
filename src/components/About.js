@@ -1,3 +1,4 @@
+import {Container, Row, Col} from 'react-bootstrap'
 import Navigation from "./Navigation"
 import Footer from "./Footer"
 
@@ -5,12 +6,15 @@ const About = () => {
   return (
     <>
     <Navigation />
-    <main>
-      {/*
-      <div>            
+    <Container className="p-4 shadow-lg">
+      <Row>
+        <Col xs={12} md={3}>
+              <div>            
      <img id="avatar" src="/images/avatar.jpg" alt="Headshot" />
      </div>
-        */}
+        </Col>
+        <Col xs={12} md={9}>
+        
      <div>
       <p>Hello and welcome. My name is Robert. I am a father of two young men. I have been in the technical field for over 20 years, starting with working towards/achieving my CompTIA A+ Certification in 1999. Since that time I have worked several local and global companies.</p>
       <p>Technician for a local computer shop in King City, California doing computer troubleshooting and repair work for the community of King City and surrounding areas.</p>
@@ -20,8 +24,9 @@ const About = () => {
       <p>Ancestry Network Operations Center, monitoring the Website services, coordinating outage resolution, documenting issues, managing cloud services.</p>
       <p>Overstock supporting private and public cloud systems running OpenStack, AWS and GCP and managing systems running Kubernetes Clusters.</p>
       </div>
-
-    </main>
+</Col>
+      </Row>
+    </Container>
     <Footer/>
     </>
   )
