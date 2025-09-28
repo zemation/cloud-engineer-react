@@ -4,8 +4,10 @@ import Footer from "./Footer"
 
 const Home = () => {
   return(
+    <>
+        <Navigation />
     <Container fluid>
-    <Navigation />
+
     <main>
       <div id="header">
 
@@ -50,10 +52,10 @@ const Home = () => {
       </main>
 
 
-    
+    </Container>
     <Footer />
  
-    </Container>
+    </>
   )
 }
 
