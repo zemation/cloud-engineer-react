@@ -18,11 +18,11 @@ const Projects = () => {
       </section>
       <section>
         <h1>Prometheus / Grafana</h1>
-        <p>Running Prometheus / Grafana after installing with helm and ensure it's running properly on the given storage solution.  This includes installing the blackbox-exporter so I can monitor this and other websites.  </p>
+        <p>Running Prometheus / Grafana after installing with helm and ensure it's running properly on the given storage solution.  This includes installing the blackbox-exporter so I can monitor this and other websites.  It will take some time but as I also push out these websites which are being built in ReactJS and will further improve monitoring to work with that platform.</p>
       </section>
       <section>
         <h1>Jenkins</h1>
-        <p>Going to have it run on the Kubernetes cluster and will be used for understanding how to set up deployments with webhooks to update live websites after a pr is sent to git.</p>
+        <p>Going to have it run on the Kubernetes cluster and will be used for understanding how to set up deployments with webhooks to update live websites after a pr is sent to git.  As some of my projects grow, cloud-master.io for example, I hope to advance the use of Jenkins.</p>
       </section>
       <section>
         <h1>Cloud-Master.io</h1>

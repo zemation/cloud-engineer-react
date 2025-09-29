@@ -6,7 +6,7 @@ const About = () => {
   return (
     <>
     <Navigation />
-    <Container className="p-4 shadow-lg d-flex justify-content-center w-50">
+    <Container className="p-4 shadow-lg w-50">
       <Row>
         <Col xs={12} md={3}>
               <div>            

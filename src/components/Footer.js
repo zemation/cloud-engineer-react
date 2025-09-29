@@ -2,9 +2,9 @@ import {  Container, Row, Navbar, Nav } from 'react-bootstrap'
 
 const Footer = () => {
   return (
-    <Container fluid className="sticky-bottom text-white bg-dark">
+    <Container fluid className="mt-5">
       <Row>
-      <Navbar bg="dark" variant="dark" className="justify-content-center">
+      <Navbar className="justify-content-center">
 
         <Nav>
           <Nav.Item>

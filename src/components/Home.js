@@ -8,9 +8,9 @@ const Home = () => {
   return(
     <>
     <Navigation />
-    <Container>
+    <Container className="mt-5"> 
 
-    <div className="text-center mt-5 mb-5">
+    <div className="text-center">
 
       <h1>A Cloud Engineer</h1>
       <h2>Certified Cloud and System Administrator</h2>
@@ -30,7 +30,7 @@ const Home = () => {
         
         <Card.Body>
           <Card.Img src="/images/cloud-servers.jpg" />
-          <Card.Text><p>Certified Cloud Professional, Systems Analysis and Site Reliabilityg.</p></Card.Text>
+          <Card.Text><p>Certified Cloud Professional, Systems Analysis and Site Reliability.</p></Card.Text>
 
         </Card.Body>
       </Card>
