@@ -6,7 +6,7 @@ const Resume = () => {
   return (
     <>
           <Navigation />
-          <Container className="p-4 shadow-lg">
+          <Container className="p-4 shadow-lg w-50">
              
           <section>
             <h2>Bed Bath and Beyond</h2>

@@ -6,9 +6,10 @@ const Projects = () => {
   return (
     <>
       <Navigation />
-      <Container className="p-4 shadow-lg">
+      <Container className="p-4 shadow-lg w-50">
       <section>
         <h1>Kubernetes</h1>
+
         <p>Recently I picked up three Dell Optiplex mini systems that have been configured for a Kubernetes cluster. This has provided me experience with setting up the cluster both via Kubernetes the Hard Way and using kubeadm init.  And also taught me much in the way planning ahead as I've worked out issues that arise on new clusters.</p>
         <p>The cluster is currently running Cilium for cluster networking as well as kube-proxy replacement.  This has definitely taught me how to ensure that there are no remnants of calico or flannel as well as if kube-proxy is removed to enable kube-proxy replacement in cilium.</p>
         <p>I have installed Longhorn to manage pvc and storage.  Which I also learned that planning ahead for storage don't let linux set up default partition sizes as I let it create a 34Gb /home when there is only one user and it's not used for any kind of user files.</p>

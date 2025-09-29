@@ -6,11 +6,11 @@ const About = () => {
   return (
     <>
     <Navigation />
-    <Container className="p-4 shadow-lg">
+    <Container className="p-4 shadow-lg d-flex justify-content-center w-50">
       <Row>
         <Col xs={12} md={3}>
               <div>            
-     <img id="avatar" src="/images/avatar.jpg" alt="Headshot" />
+     <img id="avatar" src="/images/avatar.jpg" alt="Headshot" className="img-fluid mx-auto" />
      </div>
         </Col>
         <Col xs={12} md={9}>

@@ -7,15 +7,15 @@ import Footer from "./Footer"
 const Home = () => {
   return(
     <>
-        <Navigation />
+    <Navigation />
     <Container>
 
-    <div className="text-center">
+    <div className="text-center mt-5 mb-5">
 
       <h1>A Cloud Engineer</h1>
       <h2>Certified Cloud and System Administrator</h2>
     </div>
-      <CardGroup>
+      <CardGroup className="mb-5">
       <Card style={{ width: '18rem' }}>
         <Card.Header >SysOps Admin</Card.Header>
         
@@ -44,6 +44,7 @@ const Home = () => {
         </Card.Body>
       </Card>
       </CardGroup>
+      <p>With over 20 years of experience in the technical field, starting with a CompTIA A+ and spanning roles from a local computer technician to a Network Operations Center specialist and finally managing Kubernetes Clusters on OpenStack, AWS, and GCP cloud systems, the author brings a wealth of expertise in hardware, customer support, Linux administration, and cloud infrastructure.</p>
      </Container>
 
 
