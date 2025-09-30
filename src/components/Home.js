@@ -21,7 +21,7 @@ const Home = () => {
         
         <Card.Body>
           <Card.Img src="/images/desk-admin.jpg" />
-          <Card.Text><p>Certified Windows Support Specialist and Linux System Administrator. Working with PowerShell and BASH scripting.</p></Card.Text>
+          <Card.Text>Certified Windows Support Specialist and Linux System Administrator. Working with PowerShell and BASH scripting.</Card.Text>
 
         </Card.Body>
       </Card>
@@ -30,16 +30,16 @@ const Home = () => {
         
         <Card.Body>
           <Card.Img src="/images/cloud-servers.jpg" />
-          <Card.Text><p>Certified Cloud Professional, Systems Analysis and Site Reliability.</p></Card.Text>
+          <Card.Text>Certified Cloud Professional, Systems Analysis and Site Reliability.</Card.Text>
 
         </Card.Body>
       </Card>
       <Card style={{ width: '18rem' }}>
-        <Card.Header>SysOps Admin</Card.Header>
+        <Card.Header>Web Developer</Card.Header>
         
         <Card.Body>
           <Card.Img src="/images/web-dev.jpg" />
-          <Card.Text><p>Two decades of experience with HTML and CSS, recently adding the Bootstrap framework and now building on JavaScript and NodeJS including this website that was build in ReactJS.</p></Card.Text>
+          <Card.Text>Two decades of experience with HTML and CSS, recently adding the Bootstrap framework and now building on JavaScript and NodeJS including this website that was build in ReactJS.</Card.Text>
 
         </Card.Body>
       </Card>
