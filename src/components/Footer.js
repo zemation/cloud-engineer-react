@@ -8,16 +8,16 @@ const Footer = () => {
 
         <Nav>
           <Nav.Item>
-            <Nav.Link to="http://www.github.com/zemation" target="_blank"><i className="fa-brands fa-linkedin"></i></Nav.Link>
+            <Nav.Link href="http://www.github.com/zemation" target="_blank"><i className="fa-brands fa-github"></i></Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link to="https://www.linkedin.com/in/robertbrodgers" target="_blank"><i className="fa-brands fa-github"></i></Nav.Link>
+            <Nav.Link href="https://www.linkedin.com/in/robertbrodgers" target="_blank"><i className="fa-brands fa-linkedin"></i></Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link to="https://codepen.io/zemation" target="_blank"><i class="fa-brands fa-codepen"></i></Nav.Link>
+            <Nav.Link href="https://codepen.io/zemation" target="_blank"><i className="fa-brands fa-codepen"></i></Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link to="https://www.freecodecamp.org/zemationx" target="_blank"><i class="fa-brands fa-free-code-camp"></i></Nav.Link>
+            <Nav.Link href="https://www.freecodecamp.org/zemationx" target="_blank"><i className="fa-brands fa-free-code-camp"></i></Nav.Link>
           </Nav.Item>
       </Nav>
 
