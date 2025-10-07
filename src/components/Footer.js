@@ -6,7 +6,7 @@ const Footer = () => {
       <Row>
       <Navbar className="justify-content-center">
 
-        <Nav>
+        <Nav className="fs-2">
           <Nav.Item>
             <Nav.Link href="http://www.github.com/zemation" target="_blank"><i className="fa-brands fa-github"></i></Nav.Link>
           </Nav.Item>
@@ -18,6 +18,9 @@ const Footer = () => {
           </Nav.Item>
           <Nav.Item>
             <Nav.Link href="https://www.freecodecamp.org/zemationx" target="_blank"><i className="fa-brands fa-free-code-camp"></i></Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link href="https://dev.to/zemation" target="_blank"><i class="fa-brands fa-dev"></i></Nav.Link>
           </Nav.Item>
       </Nav>
 
