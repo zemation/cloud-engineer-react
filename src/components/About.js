@@ -15,15 +15,38 @@ const About = () => {
         </Col>
         <Col xs={12} md={9}>
         
-     <div>
-      <p>Hello and welcome. My name is Robert. I am a father of two young men. I have been in the technical field for over 20 years, starting with working towards/achieving my CompTIA A+ Certification in 1999. Since that time I have worked several local and global companies.</p>
-      <p>Technician for a local computer shop in King City, California doing computer troubleshooting and repair work for the community of King City and surrounding areas.</p>
-      <p>A Resolution Specialist supporting Dell XPS, Dimension and Inspiron computers, ensuring customer systems were properly troubleshot and qualifying parts were replaced as needed.</p>
-      <p>Worked for a remote support company called iTok (now Bask) supporting a variety of customer hardware and software issues, periodic cleanup malware and temporary files and maintenence services.</p>
-      <p>Junior System Admin for Bluehost, resolving issues with Linux, cPanel and other web services for shared, reseller and VPS/Dedicated server clients.</p>
-      <p>Ancestry Network Operations Center, monitoring the Website services, coordinating outage resolution, documenting issues, managing cloud services.</p>
-      <p>Overstock supporting private and public cloud systems running OpenStack, AWS and GCP and managing systems running Kubernetes Clusters.</p>
-      </div>
+         <section>
+        <h2>About Me</h2>
+        
+        {/* Paragraph 1: Summary and Personal Hook */}
+        <p>
+            Hello and welcome. I am a dedicated **Systems and Cloud Infrastructure Engineer** with over 
+            **20 years of experience** spanning local support, global enterprise operations, and modern cloud environments. 
+            When I'm not focused on optimizing Kubernetes clusters and cloud infrastructure, I am a proud father of two young men. 
+            My career began with earning my **CompTIA A+ in 1999**, establishing a foundation that has since grown into expertise in **Linux, OpenStack, AWS, and Kubernetes**.
+        </p>
+
+        {/* Paragraph 2: The Technical Foundation (Early Career) */}
+        <p>
+            My technical foundation was forged in hands-on hardware and software support, working as a **Technician** for a local computer shop and later as a **Resolution Specialist** for Dell, where I mastered **deep-dive hardware troubleshooting** and customer service. This evolved into remote support at iTok/Bask, where I provided high-level maintenance, software support, 
+            and malware cleanup for diverse client systems.
+        </p>
+
+        {/* Paragraph 3: Scaling to Enterprise Operations */}
+        <p>
+            I transitioned into web hosting and cloud operations, first as a **Junior System Administrator** at **Bluehost**, 
+            resolving complex issues across **Linux, cPanel**, and various server environments (shared, reseller, VPS). 
+            Following that, I joined the **Ancestry Network Operations Center**, focusing on **website monitoring, outage coordination, 
+            and documentation** to ensure the stability of critical online services.
+        </p>
+
+        {/* Paragraph 4: Modern Cloud & Orchestration Focus (Most Recent) */}
+        <p>
+            Most recently, I specialized in large-scale hybrid cloud management at **Overstock/Bed Bath & Beyond**. 
+            In this role, I focused on high availability and optimization across private and public clouds 
+            (**OpenStack, AWS, GCP**), with significant experience **managing and maintaining Kubernetes clusters**.
+        </p>
+    </section>
 </Col>
       </Row>
     </Container>
