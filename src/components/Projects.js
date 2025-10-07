@@ -8,32 +8,71 @@ const Projects = () => {
       <Navigation />
       <Container className="p-4 shadow-lg w-50">
       <section>
-        <h1>Kubernetes</h1>
-
-        <p>Recently I picked up three Dell Optiplex mini systems that have been configured for a Kubernetes cluster. This has provided me experience with setting up the cluster both via Kubernetes the Hard Way and using kubeadm init.  And also taught me much in the way planning ahead as I've worked out issues that arise on new clusters.</p>
-        <p>The cluster is currently running Cilium for cluster networking as well as kube-proxy replacement.  This has definitely taught me how to ensure that there are no remnants of calico or flannel as well as if kube-proxy is removed to enable kube-proxy replacement in cilium.</p>
-        <p>I have installed Longhorn to manage pvc and storage.  Which I also learned that planning ahead for storage don't let linux set up default partition sizes as I let it create a 34Gb /home when there is only one user and it's not used for any kind of user files.</p>
-        <p>Due to apparent difficulties with resizing xfs partitions I re-imaged these systems and specified the desired partition sizes and the cluster is running again with Cilium for the CNI and Longhorn again for the storage.</p>   
+        <h2>Technical Projects &amp; Labs</h2>
         
-      </section>
-      <section>
-        <h1>Prometheus / Grafana</h1>
-        <p>Running Prometheus / Grafana after installing with helm and ensure it's running properly on the given storage solution.  This includes installing the blackbox-exporter so I can monitor this and other websites.  It will take some time but as I also push out these websites which are being built in ReactJS and will further improve monitoring to work with that platform.</p>
-      </section>
-      <section>
-        <h1>Jenkins</h1>
-        <p>Going to have it run on the Kubernetes cluster and will be used for understanding how to set up deployments with webhooks to update live websites after a pr is sent to git.  As some of my projects grow, cloud-master.io for example, I hope to advance the use of Jenkins.</p>
-      </section>
-      <section>
-        <h1>Cloud-Master.io</h1>
-        <p>Passion project to provide a website that will also be built while learning react.  The idea behind it is to provide a hub for people to find resources to help learn topics and training for computer industry certifications. </p>
+        {/* Kubernetes Cluster */}
+        <div>
+            <h3>Kubernetes Cluster &amp; Core Infrastructure 💻</h3>
+            <p>
+                **Project Goal:** Establish a highly available, self-hosted Kubernetes cluster for development and production workloads.
+            </p>
+            <ul>
+                <li>Successfully provisioned a 3-node Kubernetes cluster, gaining experience with both **"Kubernetes the Hard Way"** methodology and automated deployment via **kubeadm**.</li>
+                <li>Implemented **Cilium** as the CNI, configured for **kube-proxy replacement** to enhance networking performance and control, managing component dependencies effectively.</li>
+                <li>Deployed **Longhorn** for persistent volume management, leveraging dedicated storage configured with **nfs-utils** and **iscsid** for reliable data persistence.</li>
+                <li>Demonstrated meticulous planning and recovery skills by **re-imaging and re-partitioning systems** to optimize disk space after encountering limitations with XFS partition resizing.</li>
+            </ul>
+        </div>
+        
+        {/* Monitoring Stack */}
+        <div>
+            <h3>Monitoring &amp; Observability Stack 📊</h3>
+            <p>
+                **Project Goal:** Deploy a comprehensive monitoring solution to track cluster health, application performance, and external service availability.
+            </p>
+            <ul>
+                <li>Deployed the full **Prometheus and Grafana** stack using **Helm** for centralized cluster monitoring, confirming proper integration with the Longhorn storage solution.</li>
+                <li>Configured the **blackbox-exporter** to monitor the availability of external websites and services, establishing foundational observability practices.</li>
+                <li>Planned integration to monitor **ReactJS**-based applications as they are deployed, ensuring monitoring evolves with application development.</li>
+            </ul>
+        </div>
+        
+        {/* CI/CD */}
+        <div>
+            <h3>Continuous Integration / Continuous Deployment (CI/CD) ⚙️</h3>
+            <p>
+                **Project Goal:** Implement an automated CI/CD pipeline for rapid, reliable application deployment from source code to the production cluster.
+            </p>
+            <ul>
+                <li>Initiated the deployment of **Jenkins** on the Kubernetes cluster to manage application builds and deployments.</li>
+                <li>Currently focusing on configuring **webhooks** and pipelines to automatically trigger website updates and deployments upon merging a pull request (PR) to the Git repository.</li>
+            </ul>
+        </div>
 
-      </section>
-      <section>
-        <h1>LM Studio</h1>
-        <p>While this goal is a little farther off, the goal is to experiment with AI models in order to provide a bot for cloud-master to help users not only find information but also directly talk with a AI model to help with troubleshooting items they may be working with.</p>
-      
-      </section>
+        {/* Cloud-Master.io */}
+        <div>
+            <h3>Cloud-Master.io (Portfolio &amp; Learning Hub) 💡</h3>
+            <p>
+                **Project Goal:** Create a public-facing web hub dedicated to compiling resources and training materials for IT certification and learning.
+            </p>
+            <ul>
+                <li>Driving all development using **ReactJS**, directly showcasing front-end development capabilities alongside infrastructure expertise.</li>
+                <li>The project acts as a live, evolving portfolio, integrating many of the aforementioned infrastructure components (Kubernetes hosting, Prometheus monitoring).</li>
+            </ul>
+        </div>
+        
+        {/* AI Integration */}
+        <div>
+            <h3>Future AI Integration (LM Studio) 🤖</h3>
+            <p>
+                **Future Goal:** Experiment with local AI models to enhance user support and troubleshooting capabilities on the Cloud-Master.io platform.
+            </p>
+            <ul>
+                <li>Experimenting with **LM Studio** and local AI/ML models to provide an interactive support bot.</li>
+                <li>The bot will allow users to troubleshoot common issues by talking directly with a curated AI model.</li>
+            </ul>
+        </div>
+    </section>
       
     </Container>
     <Footer/>
