@@ -1,11 +1,9 @@
 import { Container } from 'react-bootstrap'
-import Navigation from "./Navigation"
-import Footer from "./Footer"
+
 
 const Projects = () => {
   return (
-    <>
-      <Navigation />
+
       <Container className="p-4 shadow-lg w-50">
       <section>
         <h2>Technical Projects &amp; Labs</h2>
@@ -75,8 +73,7 @@ const Projects = () => {
     </section>
       
     </Container>
-    <Footer/>
-    </>
+
   )
 }
 

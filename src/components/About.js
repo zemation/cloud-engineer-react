@@ -1,11 +1,9 @@
 import {Container, Row, Col} from 'react-bootstrap'
-import Navigation from "./Navigation"
-import Footer from "./Footer"
+
 
 const About = () => {
   return (
-    <>
-    <Navigation />
+
     <Container className="p-4 shadow-lg w-50">
       <Row>
         <Col xs={12} md={3}>
@@ -50,8 +48,7 @@ const About = () => {
 </Col>
       </Row>
     </Container>
-    <Footer/>
-    </>
+
   )
 }
 

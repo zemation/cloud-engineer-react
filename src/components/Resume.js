@@ -1,11 +1,9 @@
 import { Container } from 'react-bootstrap'
-import Navigation from "./Navigation"
-import Footer from "./Footer"
+
 
 const Resume = () => {
   return (
-    <>
-          <Navigation />
+
           <Container className="p-4 shadow-lg w-50">
              
           <section>
@@ -57,8 +55,7 @@ const Resume = () => {
             <p>Cloud Computing, Linux Administration, Problem Analysis, Containerization, Troubleshooting, Root Cause Analysis, Communication, Infrastructure as a Service (IaaS), Technical Documentation, Analytical Skills, Front-End Development, Linux, Microsoft Windows, Amazon Web Services, Google Cloud Platform, Openstack, System Administration, Technical Support, BASH, Python, Computer Hardware, PowerShell, Bootstrap, Problem Solving, New Relic, Kubernetes, Docker, SSH, API, Git, Packer, Cloud Panel, CPanel, NodeJS, Django, Load Balancers, </p>
           </section>
           </Container>
-          <Footer/>
-    </>
+
   )
 }
 

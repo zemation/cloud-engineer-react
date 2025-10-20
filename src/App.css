@@ -1,0 +1,15 @@
+/* Styles for the main container (App component) */
+#root, body, html {
+  height: 100%; /* Ensure the entire body takes up the viewport height */
+}
+
+.App {
+  min-height: 100vh; /* Set the minimum height of the application wrapper */
+  display: flex; /* Enable Flexbox layout */
+  flex-direction: column; /* Stack the children (Nav, Main, Footer) vertically */
+}
+
+/* This is the key: The main content area expands to take up all available space */
+.App main {
+  flex-grow: 1; 
+}

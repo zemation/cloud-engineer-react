@@ -1,12 +1,10 @@
 import {Container, Row, Col } from 'react-bootstrap'
 import Card from 'react-bootstrap/Card'
-import Navigation from "./Navigation"
-import Footer from "./Footer"
+
 
 const Home = () => {
   return(
-    <>
-    <Navigation />
+
     <Container className="mt-5"> 
 
     <div className="text-center mb-5">
@@ -70,9 +68,6 @@ const Home = () => {
 
 
 
-    <Footer />
- 
-    </>
   )
 }
 
