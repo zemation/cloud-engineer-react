@@ -73,7 +73,7 @@ const Projects = () => {
 	
 	{/* Certifications */}
 	<div>
-		<p>Studying for AWS Cloud Practitioners </p>
+		<p>Studying for AWS Cloud Practitioners certification </p>
 	</div>
     </section>
       
