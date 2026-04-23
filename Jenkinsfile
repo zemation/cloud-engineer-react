@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    environment {
+        DEPLOY_USER = 'acloudengineer'
+        DEPLOY_HOST = 'your-droplet-ip'
+        DEPLOY_PATH = '/home/acloudengineer/htdocs/yourdomain.com'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm ci'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh """
+                    rsync -avz --delete \
+                        --exclude='.git' \
+                        -e 'ssh -o StrictHostKeyChecking=no' \
+                        ./build/ ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/
+                """
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment successful!'
+        }
+        failure {
+            echo 'Deployment failed!'
+        }
+    }
+}
