@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DEPLOY_USER = 'acloudengineer'
-        DEPLOY_HOST = 'your-droplet-ip'
-        DEPLOY_PATH = '/home/acloudengineer/htdocs/yourdomain.com'
+        DEPLOY_HOST = '206.81.2.19'
+        DEPLOY_PATH = '/home/acloudengineer/htdocs/www.acloudengineer.com'
     }
 
     stages {
