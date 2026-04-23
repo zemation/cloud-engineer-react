@@ -13,7 +13,7 @@ const Resume = () => {
               <li>Drove high system availability (99.99%+) and performance by managing critical cloud infrastructure, including configuring and maintaining internal networking and storage for the OpenStack cluster across compute, networking, and database tiers. </li>
               <li>Led cloud infrastructure optimization efforts, implementing innovative IaaS/PaaS solutions to enhance system capabilities and reduce operational costs. </li>
               <li>Managed and governed access to public cloud resources (AWS/GCP), reducing cloud spend by proactively identifying and deleting unused accounts and provisioning role-based permissions for users and services.</li>
-              <li>Architected and deployed production OpenStack environments using Kolla Ansible for automated deployment and Ceph Storage for scalable, resilient block and object storage.</li>
+              <li>Architected and deployed production OpenStack environments using Kolla Ansible for automated deployment and Ceph Storage for scalable, resilient block and object storage. Most recently this culminated in building out configuration for Openstack Caracal via Kolla-Ansible and Ceph Reef.</li>
             </ul>
           </section>
 
