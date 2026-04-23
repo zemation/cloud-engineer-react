@@ -28,7 +28,7 @@ const Footer = () => {
     </Navbar>
     </Row>
     <Row className="text-center">
-      <p>&copy; 2025 acloudengineer.com</p>      
+      <p>&copy; 2026 acloudengineer.com</p>      
     </Row>
     
 
