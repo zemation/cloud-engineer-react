@@ -70,6 +70,11 @@ const Projects = () => {
                 <li>The bot will allow users to troubleshoot common issues by talking directly with a curated AI model.</li>
             </ul>
         </div>
+	
+	{/* Certifications */}
+	<div>
+		<p>Studying for AWS Cloud Practitioners </p>
+	</div>
     </section>
       
     </Container>
