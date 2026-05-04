@@ -37,12 +37,14 @@ const CARDS = [
     {
         title: "Cloud-Master.io — Portfolio & Learning Hub",
         goal: "A public-facing web hub dedicated to compiling resources and training materials for IT certification and learning.",
-        tags: [{ label: "Frontend", color: "teal" }, { label: "Active", color: "green" }],
+        tags: [{ label: "Frontend", color: "teal" }, { label: "Under Construction", color: "warning" }],
         bullets: [
             "Built entirely in ReactJS, showcasing front-end development capabilities alongside infrastructure expertise.",
             "Acts as a live, evolving portfolio integrating Kubernetes hosting and Prometheus monitoring.",
+            "Site was recently compromised — permissions have been locked down and the site is currently being restored. Check back later.",
         ],
         link: "https://Cloud-Master.io",
+        notice: "Site is currently under construction while being restored.",
     },
     {
         title: "Local AI Integration (LM Studio)",
@@ -198,7 +200,16 @@ function ProjectCard({ project, delay }) {
                             <li key={i} style={{ fontSize: "13px", color: "#495057", lineHeight: 1.6 }}>{b}</li>
                         ))}
                     </ul>
-                    {project.link && (
+                    {project.notice && (
+                        <div style={{
+                            marginTop: "12px", padding: "6px 10px", borderRadius: "6px",
+                            background: "#fff3cd", border: "0.5px solid #ffc107",
+                            fontSize: "12px", color: "#856404",
+                        }}>
+                            {project.notice}
+                        </div>
+                    )}
+                    {project.link && !project.notice && (
                         <a href={project.link} style={{ display: "inline-block", marginTop: "10px", fontSize: "13px", color: "#0d6efd" }}
                             onClick={e => e.stopPropagation()}>
                             {project.link} →

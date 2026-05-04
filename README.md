@@ -1,70 +1,99 @@
-# Getting Started with Create React App
+# A Cloud Engineer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A personal portfolio and learning hub built in ReactJS — showcasing 25+ years of experience in cloud infrastructure, Linux administration, and front-end development.
 
-## Available Scripts
+Live site: [acloudengineer.com](https://acloudengineer.com)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## About
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This site serves as a living portfolio for Robert Rodgers, a Systems and Cloud Infrastructure Engineer with experience across OpenStack, AWS, GCP, and Kubernetes. It also acts as a resource hub for IT certification and learning materials.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The project is self-hosted on a personal Kubernetes cluster, monitored via Prometheus and Grafana, and deployed through a Jenkins CI/CD pipeline.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Pages
 
-### `npm run build`
+- **Home** — Introduction and specialty overview
+- **Resume** — Work history, certifications, and skills with interactive filtering
+- **Projects** — Technical home lab projects and infrastructure work
+- **About** — Background, career timeline, and personal info
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Tech Stack
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Layer | Technology |
+|---|---|
+| Frontend | ReactJS, React Router, React Bootstrap |
+| Styling | Bootstrap 5, inline CSS |
+| Icons | Font Awesome |
+| Hosting | Self-hosted Kubernetes cluster |
+| Monitoring | Prometheus, Grafana, blackbox-exporter |
+| CI/CD | Jenkins (webhook-triggered) |
+| Storage | Longhorn (persistent volumes) |
+| Networking | Cilium CNI |
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Getting Started
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Prerequisites
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Node.js 18+
+- npm
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Install
 
-## Learn More
+```bash
+git clone https://github.com/zemation/cloud-master
+cd cloud-master
+npm install
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Run locally
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+PORT=3001 npm start
+```
 
-### Code Splitting
+Open [http://localhost:3001](http://localhost:3001) in your browser.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Build for production
 
-### Analyzing the Bundle Size
+```bash
+npm run build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Output is in the `build/` folder, ready to serve.
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Infrastructure
 
-### Advanced Configuration
+This site runs on a self-hosted 3-node Kubernetes cluster:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- **Container orchestration** — Kubernetes via kubeadm
+- **Networking** — Cilium CNI with kube-proxy replacement
+- **Storage** — Longhorn with NFS/iSCSI backing
+- **Monitoring** — Prometheus + Grafana stack via Helm
+- **Deployments** — Jenkins pipelines triggered on PR merge
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Author
 
-### `npm run build` fails to minify
+**Robert Rodgers**
+- GitHub: [@zemation](https://github.com/zemation)
+- LinkedIn: [robertbrodgers](https://www.linkedin.com/in/robertbrodgers)
+- CodePen: [zemation](https://codepen.io/zemation)
+- DEV: [zemation](https://dev.to/zemation)
+- freeCodeCamp: [zemationx](https://www.freecodecamp.org/zemationx)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## License
+
+MIT
