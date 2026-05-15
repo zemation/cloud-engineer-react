@@ -13,7 +13,7 @@ pipeline {
 
     environment {
         DEPLOY_USER = 'acloudengineer'
-        DEPLOY_HOST = '206.81.2.19'
+        DEPLOY_HOST = '134.209.211.98'
         DEPLOY_PATH = '/home/acloudengineer/htdocs/www.acloudengineer.com'
     }
 
