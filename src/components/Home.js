@@ -41,7 +41,7 @@ const SPECIALTIES = [
     footer: "Operating Systems",
     stats: [
       { value: "25+", label: "Years experience" },
-      { value: "99.9%", label: "Uptime maintained" },
+      { value: "Maintained", label: "System Integrity" },
     ],
     desc: "Certified Linux and Windows administrator. Proficient in PowerShell and BASH scripting for automation and system management.",
     tags: ["Linux", "Windows", "BASH", "PowerShell"],
