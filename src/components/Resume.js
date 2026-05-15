@@ -40,7 +40,7 @@ const certs = [
   { label: "LPIC-1: Linux Administrator", wip: false },
   { label: "AWS SysOps Administrator", expired: true },
   { label: "Certified Kubernetes Administrator", wip: true },
-  { label: "AWS Cloud Practitioner", wip: true },
+  { label: "AWS Cloud Practitioner", issued: "May 13, 2026" },
 ];
 
 const skillCategories = {

@@ -57,10 +57,10 @@ const CARDS = [
     },
     {
         title: "AWS Certification Path",
-        goal: "Progress from AWS Cloud Practitioner through to CloudOps Engineer certification.",
+        goal: "Progress through AWS certifications toward CloudOps Engineer.",
         tags: [{ label: "Cloud", color: "blue" }, { label: "In Progress", color: "warning" }],
         bullets: [
-            "Currently studying for the AWS Cloud Practitioner certification.",
+            "Passed AWS Cloud Practitioner on May 13, 2026.",
             "Path continues toward AWS CloudOps Engineer to complement existing infrastructure expertise.",
         ],
     },

@@ -186,11 +186,10 @@ const milestones = [
     desc: "Currently studying for the CKA.",
   },
   {
-    year: "In Progress",
+    year: "2026",
     type: "cert",
     title: "AWS Cloud Practitioner",
-    status: "wip",
-    desc: "Currently working towards AWS Cloud Practitioner certification.",
+    desc: "Issued May 13, 2026.",
   },
 ];
 
