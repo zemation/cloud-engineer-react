@@ -369,13 +369,13 @@ const About = () => {
                 on purpose, test new tech, and sharpen skills without a production environment on the line.
               </p>
               <p style={{ fontSize: "14px", color: "#495057", lineHeight: 1.7 }}>
-                One thing that has always driven me, just as much as learning itself, is sharing what I know.
+                One thing that has always driven me, just as much as learning itself, is sharing what I know.  It's what's driving me to build cloud-master.io
                 Whether it's pointing someone toward the right resource, walking a colleague through a problem,
                 or contributing to documentation — helping others along their path is something I genuinely care about.
               </p>
               <p style={{ fontSize: "14px", color: "#495057", lineHeight: 1.7 }}>
                 I'm also a proud father of two young men who are nearly adults, which is somehow both
-                impressive and terrifying. When I'm not in the lab, you'll find me gaming or watching
+                impressive and terrifying at the same time. When I'm not in the lab, you'll find me gaming or watching
                 whatever binge-worthy series I've convinced myself I'll finish this weekend.
               </p>
             </section>
