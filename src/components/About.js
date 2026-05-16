@@ -376,7 +376,7 @@ const About = () => {
               <p style={{ fontSize: "14px", color: "#495057", lineHeight: 1.7 }}>
                 I'm also a proud father of two young men who are nearly adults, which is somehow both
                 impressive and terrifying at the same time. When I'm not in the lab, you'll find me gaming or watching
-                whatever binge-worthy series I've convinced myself I'll finish this weekend.
+                whatever binge-worthy series I've convinced myself I'll finish this weekend.  For a brief look.
               </p>
             </section>
           </RevealSection>
