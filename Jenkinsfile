@@ -1,16 +1,6 @@
 pipeline {
     agent any
 
-    triggers {
-        GenericTrigger(
-            genericVariables: [],
-            token: 'my-deploy-token',
-            causeString: 'Triggered by GitHub push',
-            printContributedVariables: false,
-            printPostContent: false
-        )
-    }
-
     environment {
         DEPLOY_USER = 'acloudengineer'
         DEPLOY_HOST = '134.209.211.98'
