@@ -179,17 +179,24 @@ const milestones = [
     desc: "Expired Jan 10, 2023.",
   },
   {
-    year: "In Progress",
-    type: "cert",
-    title: "Certified Kubernetes Administrator (CKA)",
-    status: "wip",
-    desc: "Currently studying for the CKA.",
-  },
-  {
     year: "2026",
     type: "cert",
     title: "AWS Cloud Practitioner",
     desc: "Issued May 13, 2026.",
+  },
+  {
+    year: "In Progress",
+    type: "cert",
+    title: "AZ-900 (Microsoft Azure Fundamentals)",
+    status: "wip",
+    desc: "Currently studying for AZ-900.",
+  },
+  {
+    year: "In Progress",
+    type: "cert",
+    title: "Kubernetes and Cloud Native Associate (KCNA)",
+    status: "wip",
+    desc: "Currently studying for the KCNA.",
   },
 ];
 
