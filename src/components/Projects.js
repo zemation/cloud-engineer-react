@@ -4,64 +4,82 @@ import { Container } from "react-bootstrap";
 // --- Data ---
 const FEATURED = {
     title: "Kubernetes Cluster & Core Infrastructure",
-    goal: "Establish a highly available, self-hosted Kubernetes cluster for development and production workloads.",
-    tags: [{ label: "Infrastructure", color: "blue" }, { label: "Containers", color: "teal" }, { label: "Active", color: "green" }],
+    goal: "Establish a self-hosted Kubernetes cluster for development and production workloads.",
+    tags: [{ label: "Featured", color: "blue" }, { label: "Infrastructure", color: "blue" }, { label: "Containers", color: "teal" }, { label: "Active", color: "green" }],
     bullets: [
-        "Provisioned a 3-node Kubernetes cluster using both the \"Kubernetes the Hard Way\" methodology and automated deployment via kubeadm.",
-        "Implemented Cilium as the CNI, configured for kube-proxy replacement to enhance networking performance and control.",
-        "Deployed Longhorn for persistent volume management, leveraging dedicated storage configured with nfs-utils and iscsid.",
-        "Demonstrated planning and recovery skills by re-imaging and re-partitioning systems to optimize disk space after XFS partition resizing limitations.",
+        "Provisioned a 3-node Kubernetes cluster (1 master, 2 workers) on Dell Optiplex nodes using kubeadm.",
+        "Hosts use ext4 filesystems; cluster networking configured with standard CNI.",
+        "Deployed Longhorn for persistent volume management with dedicated storage.",
+        "Automated cluster provisioning and configuration via Ansible (ansible-kubernetes on GitHub).",
     ],
 };
 
 const CARDS = [
     {
         title: "Monitoring & Observability Stack",
-        goal: "Deploy a comprehensive monitoring solution to track cluster health, application performance, and external service availability.",
+        goal: "Deploy a comprehensive monitoring solution to track cluster health, node metrics, and external service availability.",
         tags: [{ label: "Observability", color: "purple" }, { label: "Active", color: "green" }],
         bullets: [
-            "Deployed the full Prometheus and Grafana stack via Helm for centralized cluster monitoring, integrated with Longhorn.",
-            "Configured blackbox-exporter to monitor availability of external websites and services.",
-            "Planned integration to monitor ReactJS-based applications as they are deployed.",
+            "Running Prometheus, Grafana, and Alertmanager on a dedicated monitoring server.",
+            "Dashboards configured for Kubernetes cluster health, Digital Ocean droplet, and system metrics (Node Exporter Full).",
+            "Alertmanager integrated with Discord webhooks for real-time notifications.",
+            "Blackbox exporter monitors external site availability.",
         ],
     },
     {
-        title: "CI/CD Pipeline",
-        goal: "Implement an automated pipeline for rapid, reliable application deployment from source code to the production cluster.",
-        tags: [{ label: "DevOps", color: "amber" }, { label: "In Progress", color: "warning" }],
+        title: "CI/CD Pipelines",
+        goal: "Automated pipelines for building and deploying web applications on pull request merge.",
+        tags: [{ label: "DevOps", color: "amber" }, { label: "Active", color: "green" }],
         bullets: [
-            "Initiated deployment of Jenkins on the Kubernetes cluster to manage application builds and deployments.",
-            "Configuring webhooks and pipelines to automatically trigger deployments on pull request merges.",
+            "Jenkins installed on a dedicated build server, managing all build and deploy pipelines.",
+            "acloudengineer.com: React app — pipeline triggers on PR submit, builds and deploys to Digital Ocean droplet.",
+            "cloud-master.io: separate Jenkinsfiles for the Vite/React frontend and Node.js backend.",
+            "Pipelines deploy via CloudPanel on the production droplet.",
         ],
     },
     {
-        title: "Cloud-Master.io — Portfolio & Learning Hub",
-        goal: "A public-facing web hub dedicated to compiling resources and training materials for IT certification and learning.",
-        tags: [{ label: "Frontend", color: "teal" }, { label: "Under Construction", color: "warning" }],
+        title: "Websites (Live)",
+        goal: "Public-facing sites serving content and API endpoints, hosted on a Digital Ocean droplet.",
+        tags: [{ label: "Frontend", color: "teal" }, { label: "Active", color: "green" }],
         bullets: [
-            "Built entirely in ReactJS, showcasing front-end development capabilities alongside infrastructure expertise.",
-            "Acts as a live, evolving portfolio integrating Kubernetes hosting and Prometheus monitoring.",
-            "Site was recently compromised — permissions have been locked down and the site is currently being restored. Check back later.",
+            "acloudengineer.com — built in React, deployed via Jenkins pipeline.",
+            "cloud-master.io — frontend in Vite/React, backend Node.js + MongoDB at api.cloud-master.io.",
+            "APM metrics for the Node backend wired into Grafana.",
+            "Content actively being added to cloud-master.io.",
         ],
-        link: "https://Cloud-Master.io",
-        notice: "Site is currently under construction while being restored.",
+        link: "https://cloud-master.io",
     },
     {
-        title: "Local AI Integration (LM Studio)",
-        goal: "Experiment with local AI models to enhance user support and troubleshooting on the Cloud-Master.io platform.",
-        tags: [{ label: "AI / ML", color: "coral" }, { label: "Planned", color: "secondary" }],
+        title: "Ansible Automation",
+        goal: "Infrastructure-as-code for provisioning and configuring servers across multiple Linux distributions.",
+        tags: [{ label: "Infrastructure", color: "blue" }, { label: "Active", color: "green" }],
         bullets: [
-            "Experimenting with LM Studio and local AI/ML models to provide an interactive support bot.",
-            "Bot will allow users to troubleshoot common issues by talking directly with a curated local AI model.",
+            "ansible-learnlinux: multi-distro automation with Vagrant, provisioning web, database, and file servers across Rocky Linux and Ubuntu.",
+            "ansible-kubernetes: automated Kubernetes cluster deployment and configuration.",
+            "Both repos public on GitHub (github.com/zemation), cleaned up and documented.",
+            "Backlog: add HAProxy load balancer role to ansible-learnlinux.",
         ],
     },
     {
-        title: "AWS Certification Path",
-        goal: "Progress through AWS certifications toward CloudOps Engineer.",
+        title: "sysinfo — Go CLI Tool",
+        goal: "A lightweight command-line tool for displaying system information, built as a Go learning project.",
+        tags: [{ label: "Go", color: "teal" }, { label: "Active", color: "green" }],
+        bullets: [
+            "Reads directly from /proc and /sys — no external dependencies for data collection.",
+            "Subcommand structure via Cobra: sysinfo, sysinfo processes cpu, sysinfo processes memory, sysinfo network.",
+            "GitHub Actions workflows and releases configured.",
+            "Published to GitHub (zemation/sysinfo) with full README and PDF guide.",
+            "Planned: macOS and Windows support via Go build tags.",
+        ],
+    },
+    {
+        title: "Certification Path",
+        goal: "Progress through cloud and Kubernetes certifications to complement hands-on infrastructure experience.",
         tags: [{ label: "Cloud", color: "blue" }, { label: "In Progress", color: "warning" }],
         bullets: [
-            "Passed AWS Cloud Practitioner on May 13, 2026.",
-            "Path continues toward AWS CloudOps Engineer to complement existing infrastructure expertise.",
+            "AWS Cloud Practitioner — passed May 13, 2026.",
+            "AZ-900 (Microsoft Azure Fundamentals) — in progress.",
+            "Kubernetes and Cloud Native Associate (KCNA) — in progress.",
         ],
     },
 ];
@@ -141,7 +159,6 @@ function FeaturedProject({ project }) {
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-start", justifyContent: "space-between", gap: "8px", marginBottom: "10px" }}>
                 <h2 style={{ fontSize: "18px", fontWeight: 500, margin: 0 }}>{project.title}</h2>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                    <Tag label="Featured" color="blue" />
                     {project.tags.map(t => <Tag key={t.label} {...t} />)}
                 </div>
             </div>
