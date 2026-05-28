@@ -5,7 +5,12 @@ import { Container } from "react-bootstrap";
 const FEATURED = {
     title: "Kubernetes Cluster & Core Infrastructure",
     goal: "Establish a self-hosted Kubernetes cluster for development and production workloads.",
-    tags: [{ label: "Featured", color: "blue" }, { label: "Infrastructure", color: "blue" }, { label: "Containers", color: "teal" }, { label: "Active", color: "green" }],
+    tags: [
+        { label: "Featured", color: "blue" },
+        { label: "Kubernetes", color: "teal" },
+        { label: "Ansible", color: "purple" },
+        { label: "Active", color: "green" },
+    ],
     bullets: [
         "Provisioned a 3-node Kubernetes cluster (1 master, 2 workers) on Dell Optiplex nodes using kubeadm.",
         "Hosts use ext4 filesystems; cluster networking configured with standard CNI.",
@@ -18,7 +23,11 @@ const CARDS = [
     {
         title: "Monitoring & Observability Stack",
         goal: "Deploy a comprehensive monitoring solution to track cluster health, node metrics, and external service availability.",
-        tags: [{ label: "Observability", color: "purple" }, { label: "Active", color: "green" }],
+        tags: [
+            { label: "Prometheus", color: "amber" },
+            { label: "Grafana", color: "amber" },
+            { label: "Active", color: "green" },
+        ],
         bullets: [
             "Running Prometheus, Grafana, and Alertmanager on a dedicated monitoring server.",
             "Dashboards configured for Kubernetes cluster health, Digital Ocean droplet, and system metrics (Node Exporter Full).",
@@ -29,7 +38,10 @@ const CARDS = [
     {
         title: "CI/CD Pipelines",
         goal: "Automated pipelines for building and deploying web applications on pull request merge.",
-        tags: [{ label: "DevOps", color: "amber" }, { label: "Active", color: "green" }],
+        tags: [
+            { label: "Jenkins", color: "amber" },
+            { label: "Active", color: "green" },
+        ],
         bullets: [
             "Jenkins installed on a dedicated build server, managing all build and deploy pipelines.",
             "acloudengineer.com: React app — pipeline triggers on PR submit, builds and deploys to Digital Ocean droplet.",
@@ -40,7 +52,11 @@ const CARDS = [
     {
         title: "Websites (Live)",
         goal: "Public-facing sites serving content and API endpoints, hosted on a Digital Ocean droplet.",
-        tags: [{ label: "Frontend", color: "teal" }, { label: "Active", color: "green" }],
+        tags: [
+            { label: "React", color: "teal" },
+            { label: "Node", color: "green" },
+            { label: "Active", color: "green" },
+        ],
         bullets: [
             "acloudengineer.com — built in React, deployed via Jenkins pipeline.",
             "cloud-master.io — frontend in Vite/React, backend Node.js + MongoDB at api.cloud-master.io.",
@@ -52,7 +68,12 @@ const CARDS = [
     {
         title: "Ansible Automation",
         goal: "Infrastructure-as-code for provisioning and configuring servers across multiple Linux distributions.",
-        tags: [{ label: "Infrastructure", color: "blue" }, { label: "Active", color: "green" }],
+        tags: [
+            { label: "Ansible", color: "purple" },
+            { label: "Infrastructure", color: "blue" },
+            { label: "Active", color: "green" },
+            { label: "WIP", color: "amber" },
+        ],
         bullets: [
             "ansible-learnlinux: multi-distro automation with Vagrant, provisioning web, database, and file servers across Rocky Linux and Ubuntu.",
             "ansible-kubernetes: automated Kubernetes cluster deployment and configuration.",
@@ -63,7 +84,12 @@ const CARDS = [
     {
         title: "sysinfo — Go CLI Tool",
         goal: "A lightweight command-line tool for displaying system information, built as a Go learning project.",
-        tags: [{ label: "Go", color: "teal" }, { label: "Active", color: "green" }],
+        tags: [
+            { label: "Go", color: "teal" },
+            { label: "GitHub Actions", color: "purple" },
+            { label: "Active", color: "green" },
+            { label: "WIP", color: "amber" },
+        ],
         bullets: [
             "Reads directly from /proc and /sys — no external dependencies for data collection.",
             "Subcommand structure via Cobra: sysinfo, sysinfo processes cpu, sysinfo processes memory, sysinfo network.",
@@ -75,7 +101,11 @@ const CARDS = [
     {
         title: "Certification Path",
         goal: "Progress through cloud and Kubernetes certifications to complement hands-on infrastructure experience.",
-        tags: [{ label: "Cloud", color: "blue" }, { label: "In Progress", color: "warning" }],
+        tags: [
+            { label: "Kubernetes", color: "teal" },
+            { label: "Cloud", color: "blue" },
+            { label: "In Progress", color: "warning" },
+        ],
         bullets: [
             "AWS Cloud Practitioner — passed May 13, 2026.",
             "AZ-900 (Microsoft Azure Fundamentals) — in progress.",
@@ -85,7 +115,11 @@ const CARDS = [
     {
         title: "Terraform — Digital Ocean",
         goal: "Provision a DigitalOcean droplet using Terraform with cloud-init bootstrapping on first boot.",
-        tags: [{ label: "Infrastructure", color: "blue" }, { label: "Terraform", color: "purple" }, { label: "WIP", color: "teal" }],
+        tags: [
+            { label: "Terraform", color: "purple" },
+            { label: "Infrastructure", color: "blue" },
+            { label: "WIP", color: "amber" },
+        ],
         bullets: [
             "Provisions a DigitalOcean droplet using the official Terraform provider.",
             "cloud-init bootstraps the server on first boot — installs sysinfo CLI tool automatically via GitHub releases.",
@@ -97,7 +131,11 @@ const CARDS = [
     {
         title: "Terraform — AWS",
         goal: "Provision a full AWS environment using Terraform with remote state management.",
-        tags: [{ label: "Infrastructure", color: "blue" }, { label: "Terraform", color: "purple" }, { label: "Cloud", color: "teal" }, { label: "WIP", color: "green" }],
+        tags: [
+            { label: "Terraform", color: "purple" },
+            { label: "Infrastructure", color: "blue" },
+            { label: "WIP", color: "amber" },
+        ],
         bullets: [
             "Provisions a complete AWS environment: VPC, public subnet, internet gateway, route tables, security groups, IAM role, and EC2 instance.",
             "AMI dynamically looked up — always pulls the latest Ubuntu 24.04 LTS from Canonical.",
@@ -107,7 +145,6 @@ const CARDS = [
         ],
     },
 ];
-
 // --- Color maps ---
 const TAG_COLORS = {
     blue: { bg: "#E6F1FB", border: "#85B7EB", text: "#0C447C" },
