@@ -82,6 +82,30 @@ const CARDS = [
             "Kubernetes and Cloud Native Associate (KCNA) — in progress.",
         ],
     },
+    {
+        title: "Terraform — Digital Ocean",
+        goal: "Provision a DigitalOcean droplet using Terraform with cloud-init bootstrapping on first boot.",
+        tags: [{ label: "Infrastructure", color: "blue" }, { label: "Terraform", color: "purple" }, { label: "Complete", color: "teal" }],
+        bullets: [
+            "Provisions a DigitalOcean droplet using the official Terraform provider.",
+            "cloud-init bootstraps the server on first boot — installs sysinfo CLI tool automatically via GitHub releases.",
+            "Variables-driven — image, size, region, and sysinfo version all configurable via terraform.tfvars.",
+            "SSH key lookup references existing key registered in DigitalOcean account.",
+            "Published to GitHub (zemation/terraform-digital-ocean).",
+        ],
+    },
+    {
+        title: "Terraform — AWS",
+        goal: "Provision a full AWS environment using Terraform with remote state management.",
+        tags: [{ label: "Infrastructure", color: "blue" }, { label: "Terraform", color: "purple" }, { label: "Cloud", color: "teal" }, { label: "Complete", color: "green" }],
+        bullets: [
+            "Provisions a complete AWS environment: VPC, public subnet, internet gateway, route tables, security groups, IAM role, and EC2 instance.",
+            "AMI dynamically looked up — always pulls the latest Ubuntu 24.04 LTS from Canonical.",
+            "Remote state stored in S3 with DynamoDB state locking.",
+            "cloud-init bootstraps the EC2 instance on first boot — installs sysinfo CLI tool automatically.",
+            "Published to GitHub (zemation/terraform-aws).",
+        ],
+    },
 ];
 
 // --- Color maps ---
