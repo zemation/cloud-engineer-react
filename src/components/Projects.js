@@ -85,7 +85,7 @@ const CARDS = [
     {
         title: "Terraform — Digital Ocean",
         goal: "Provision a DigitalOcean droplet using Terraform with cloud-init bootstrapping on first boot.",
-        tags: [{ label: "Infrastructure", color: "blue" }, { label: "Terraform", color: "purple" }, { label: "Complete", color: "teal" }],
+        tags: [{ label: "Infrastructure", color: "blue" }, { label: "Terraform", color: "purple" }, { label: "WIP", color: "teal" }],
         bullets: [
             "Provisions a DigitalOcean droplet using the official Terraform provider.",
             "cloud-init bootstraps the server on first boot — installs sysinfo CLI tool automatically via GitHub releases.",
@@ -97,7 +97,7 @@ const CARDS = [
     {
         title: "Terraform — AWS",
         goal: "Provision a full AWS environment using Terraform with remote state management.",
-        tags: [{ label: "Infrastructure", color: "blue" }, { label: "Terraform", color: "purple" }, { label: "Cloud", color: "teal" }, { label: "Complete", color: "green" }],
+        tags: [{ label: "Infrastructure", color: "blue" }, { label: "Terraform", color: "purple" }, { label: "Cloud", color: "teal" }, { label: "WIP", color: "green" }],
         bullets: [
             "Provisions a complete AWS environment: VPC, public subnet, internet gateway, route tables, security groups, IAM role, and EC2 instance.",
             "AMI dynamically looked up — always pulls the latest Ubuntu 24.04 LTS from Canonical.",
