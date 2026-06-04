@@ -144,6 +144,26 @@ const CARDS = [
             "Published to GitHub (zemation/terraform-aws).",
         ],
     },
+    // Insert after the Terraform — AWS card (end of CARDS array), before the closing ];
+
+    {
+        title: "Unity WebGL Game",
+        goal: "Build and deploy a browser-playable game from the Unity Learn tutorial series, served from the home lab.",
+        tags: [
+            { label: "Unity", color: "teal" },
+            { label: "C#", color: "blue" },
+            { label: "WebGL", color: "blue" },
+            { label: "nginx", color: "purple" },
+            { label: "Active", color: "green" },
+        ],
+        bullets: [
+            "Completed the Unity Learn 'Unity Essentials tutorial — first foray into game development with C# and the Unity engine.",
+            "Built a WebGL export target and deployed the compressed build output to the home lab server.",
+            "Configured a dedicated nginx vhost with correct MIME types and response headers for Unity WebGL (Brotli/gzip compressed .data, .wasm, and .framework files).",
+            "Playable in-browser at acloudengineer.com/game — no install required.",
+        ],
+        link: "https://www.acloudengineer.com/game",
+    },
 ];
 // --- Color maps ---
 const TAG_COLORS = {
