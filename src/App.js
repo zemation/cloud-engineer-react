@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './App.css'; // Make sure you import the CSS file with the new rules
+import './App.css';
 
 // Import Layout Components
 import Navigation from './components/Navigation';
@@ -11,21 +11,21 @@ import Home from "./components/Home";
 import Resume from "./components/Resume";
 import Projects from "./components/Projects";
 import About from "./components/About";
+import UnityGame from "./components/UnityGame";
 
 function App() {
   return (
     <BrowserRouter>
-      {/* 🌟 KEY CHANGE: Wrap everything in a div with the 'App' class */}
-      <div className="App"> 
+      <div className="App">
         <Navigation />
-        
-        {/* The 'main' tag is the one that will receive flex-grow: 1 */}
-        <main> 
+
+        <main>
           <Routes>
-            <Route path="/" element={<Home />} /> 
-            <Route path="/resume" element={<Resume />} /> 
-            <Route path="/projects" element={<Projects />} /> 
-            <Route path="/about" element={<About />} /> 
+            <Route path="/" element={<Home />} />
+            <Route path="/resume" element={<Resume />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/game" element={<UnityGame />} />
           </Routes>
         </main>
 

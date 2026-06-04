@@ -7,6 +7,7 @@ const LINKS = [
   { to: "/resume", label: "Resume" },
   { to: "/projects", label: "Projects" },
   { to: "/about", label: "About" },
+  { to: "/game", label: "Unity" },
 ];
 
 const Navigation = () => {
