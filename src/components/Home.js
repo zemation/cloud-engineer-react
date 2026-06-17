@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import ParticleHero from "./ParticleHero";
 
 // --- Scroll reveal ---
 function useScrollReveal() {
@@ -153,60 +154,39 @@ function SpecialtyCard({ s, delay }) {
 // --- Main ---
 const Home = () => {
   return (
-    <Container className="mt-5">
+    <>
+      {/* Hero — full-width, outside the container */}
+      <ParticleHero />
 
-      {/* Hero */}
-      <Reveal delay={0}>
-        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+      <Container className="mt-5">
+
+        {/* Specialty cards */}
+        <Row className="g-3 mb-5">
+          {SPECIALTIES.map((s, i) => (
+            <Col key={s.title} lg={4} md={6} sm={12}>
+              <SpecialtyCard s={s} delay={100 + i * 80} />
+            </Col>
+          ))}
+        </Row>
+
+        {/* Info paragraph */}
+        <Reveal delay={200}>
           <div style={{
-            fontSize: "11px", fontWeight: 500, letterSpacing: "0.1em",
-            textTransform: "uppercase", color: "#6c757d", marginBottom: "10px",
+            borderTop: "0.5px solid #dee2e6",
+            paddingTop: "1.5rem",
+            marginBottom: "2rem",
           }}>
-            Cloud & Infrastructure Engineer
+            <p style={{ fontSize: "14px", color: "#6c757d", lineHeight: 1.8, margin: 0, textAlign: "center", maxWidth: "680px", marginLeft: "auto", marginRight: "auto" }}>
+              With over 25 years of experience in the technical field — starting with a CompTIA A+ and
+              spanning roles from local computer technician to Network Operations Center specialist to
+              managing Kubernetes clusters on OpenStack, AWS, and GCP — bringing a wealth of expertise
+              in hardware, Linux administration, cloud infrastructure, and front-end development.
+            </p>
           </div>
-          <h1 style={{ fontSize: "42px", fontWeight: 500, color: "#212529", marginBottom: "12px", lineHeight: 1.2 }}>
-            Robert Rodgers
-          </h1>
-          <p style={{
-            fontSize: "16px", color: "#6c757d", maxWidth: "520px",
-            margin: "0 auto", lineHeight: 1.7,
-          }}>
-            25+ years building reliable systems — from hardware bench work to
-            Kubernetes clusters on AWS, GCP, and OpenStack.
-          </p>
-          <div style={{
-            width: "40px", height: "2px", background: "#85B7EB",
-            margin: "1.5rem auto 0",
-          }} />
-        </div>
-      </Reveal>
+        </Reveal>
 
-      {/* Specialty cards */}
-      <Row className="g-3 mb-5">
-        {SPECIALTIES.map((s, i) => (
-          <Col key={s.title} lg={4} md={6} sm={12}>
-            <SpecialtyCard s={s} delay={100 + i * 80} />
-          </Col>
-        ))}
-      </Row>
-
-      {/* Info paragraph */}
-      <Reveal delay={200}>
-        <div style={{
-          borderTop: "0.5px solid #dee2e6",
-          paddingTop: "1.5rem",
-          marginBottom: "2rem",
-        }}>
-          <p style={{ fontSize: "14px", color: "#6c757d", lineHeight: 1.8, margin: 0, textAlign: "center", maxWidth: "680px", marginLeft: "auto", marginRight: "auto" }}>
-            With over 25 years of experience in the technical field — starting with a CompTIA A+ and
-            spanning roles from local computer technician to Network Operations Center specialist to
-            managing Kubernetes clusters on OpenStack, AWS, and GCP — bringing a wealth of expertise
-            in hardware, Linux administration, cloud infrastructure, and front-end development.
-          </p>
-        </div>
-      </Reveal>
-
-    </Container>
+      </Container>
+    </>
   );
 };
 

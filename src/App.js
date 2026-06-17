@@ -11,7 +11,6 @@ import Home from "./components/Home";
 import Resume from "./components/Resume";
 import Projects from "./components/Projects";
 import About from "./components/About";
-import UnityGame from "./components/UnityGame";
 
 function App() {
   return (
@@ -25,7 +24,6 @@ function App() {
             <Route path="/resume" element={<Resume />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/about" element={<About />} />
-            <Route path="/game" element={<UnityGame />} />
           </Routes>
         </main>
 

@@ -1,25 +1,24 @@
 import { useState, useEffect, useRef } from "react";
 import { Container } from "react-bootstrap";
+import ProjectGallery from "./ProjectGallery";
 
 // --- Data ---
-const FEATURED = {
-    title: "Kubernetes Cluster & Core Infrastructure",
-    goal: "Establish a self-hosted Kubernetes cluster for development and production workloads.",
-    tags: [
-        { label: "Featured", color: "blue" },
-        { label: "Kubernetes", color: "teal" },
-        { label: "Ansible", color: "purple" },
-        { label: "Active", color: "green" },
-    ],
-    bullets: [
-        "Provisioned a 3-node Kubernetes cluster (1 master, 2 workers) on Dell Optiplex nodes using kubeadm.",
-        "Hosts use ext4 filesystems; cluster networking configured with standard CNI.",
-        "Deployed Longhorn for persistent volume management with dedicated storage.",
-        "Automated cluster provisioning and configuration via Ansible (ansible-kubernetes on GitHub).",
-    ],
-};
-
 const CARDS = [
+    {
+        title: "Kubernetes Cluster & Core Infrastructure",
+        goal: "Establish a self-hosted Kubernetes cluster for development and production workloads.",
+        tags: [
+            { label: "Kubernetes", color: "teal" },
+            { label: "Ansible", color: "purple" },
+            { label: "Active", color: "green" },
+        ],
+        bullets: [
+            "Provisioned a 3-node Kubernetes cluster (1 master, 2 workers) on Dell Optiplex nodes using kubeadm.",
+            "Hosts use ext4 filesystems; cluster networking configured with standard CNI.",
+            "Automated cluster provisioning and configuration via Ansible (ansible-kubernetes on GitHub).",
+        ],
+        githubUrl: "https://github.com/zemation/ansible-kubernetes",
+    },
     {
         title: "Monitoring & Observability Stack",
         goal: "Deploy a comprehensive monitoring solution to track cluster health, node metrics, and external service availability.",
@@ -64,6 +63,7 @@ const CARDS = [
             "Content actively being added to cloud-master.io.",
         ],
         link: "https://cloud-master.io",
+        secondaryLink: "https://www.acloudengineer.com",
     },
     {
         title: "Ansible Automation",
@@ -80,6 +80,7 @@ const CARDS = [
             "Both repos public on GitHub (github.com/zemation), cleaned up and documented.",
             "Backlog: add HAProxy load balancer role to ansible-learnlinux.",
         ],
+        githubUrl: "https://github.com/zemation/ansible-learnlinux",
     },
     {
         title: "sysinfo — Go CLI Tool",
@@ -97,6 +98,7 @@ const CARDS = [
             "Published to GitHub (zemation/sysinfo) with full README and PDF guide.",
             "Planned: macOS and Windows support via Go build tags.",
         ],
+        githubUrl: "https://github.com/zemation/sysinfo",
     },
     {
         title: "Certification Path",
@@ -127,6 +129,7 @@ const CARDS = [
             "SSH key lookup references existing key registered in DigitalOcean account.",
             "Published to GitHub (zemation/terraform-digital-ocean).",
         ],
+        githubUrl: "https://github.com/zemation/terraform-digital-ocean",
     },
     {
         title: "Terraform — AWS",
@@ -143,50 +146,9 @@ const CARDS = [
             "cloud-init bootstraps the EC2 instance on first boot — installs sysinfo CLI tool automatically.",
             "Published to GitHub (zemation/terraform-aws).",
         ],
-    },
-    // Insert after the Terraform — AWS card (end of CARDS array), before the closing ];
-
-    {
-        title: "Unity WebGL Game",
-        goal: "Build and deploy a browser-playable game from the Unity Learn tutorial series, served from the home lab.",
-        tags: [
-            { label: "Unity", color: "teal" },
-            { label: "C#", color: "blue" },
-            { label: "WebGL", color: "blue" },
-            { label: "nginx", color: "purple" },
-            { label: "Active", color: "green" },
-        ],
-        bullets: [
-            "Completed the Unity Learn 'Unity Essentials tutorial — first foray into game development with C# and the Unity engine.",
-            "Built a WebGL export target and deployed the compressed build output to the home lab server.",
-            "Configured a dedicated nginx vhost with correct MIME types and response headers for Unity WebGL (Brotli/gzip compressed .data, .wasm, and .framework files).",
-            "Playable in-browser at acloudengineer.com/game — no install required.",
-        ],
-        link: "https://www.acloudengineer.com/game",
+        githubUrl: "https://github.com/zemation/terraform-aws",
     },
 ];
-// --- Color maps ---
-const TAG_COLORS = {
-    blue: { bg: "#E6F1FB", border: "#85B7EB", text: "#0C447C" },
-    teal: { bg: "#E1F5EE", border: "#5DCAA5", text: "#085041" },
-    green: { bg: "#EAF3DE", border: "#97C459", text: "#27500A" },
-    purple: { bg: "#EEEDFE", border: "#AFA9EC", text: "#3C3489" },
-    amber: { bg: "#FAEEDA", border: "#EF9F27", text: "#633806" },
-    coral: { bg: "#FAECE7", border: "#F0997B", text: "#712B13" },
-    warning: { bg: "#fff3cd", border: "#ffc107", text: "#856404" },
-    secondary: { bg: "#f1efe8", border: "#b4b2a9", text: "#444441" },
-};
-
-function Tag({ label, color }) {
-    const c = TAG_COLORS[color] || TAG_COLORS.secondary;
-    return (
-        <span style={{
-            fontSize: "11px", padding: "2px 8px", borderRadius: "20px",
-            background: c.bg, border: `0.5px solid ${c.border}`, color: c.text,
-            fontWeight: 500, whiteSpace: "nowrap",
-        }}>{label}</span>
-    );
-}
 
 // --- Scroll reveal ---
 function useScrollReveal() {
@@ -227,121 +189,82 @@ function SectionTitle({ children }) {
     );
 }
 
-// --- Featured project ---
-function FeaturedProject({ project }) {
+// --- Project links — a simple, reliable list below the 3D gallery.
+// Clicking inside a rotating 3D scene is fragile (easy to misclick mid-drag,
+// no visual cue on the card itself, silently does nothing for projects
+// without a link) so actual navigation lives here instead. ---
+function ProjectLinks({ projects }) {
+    const linkable = projects.filter(p => p.link || p.githubUrl);
+    if (linkable.length === 0) return null;
+
     return (
         <div style={{
-            border: "2px solid #85B7EB",
-            borderRadius: "12px",
-            padding: "1.5rem",
-            background: "#fff",
-            marginBottom: "2rem",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            gap: "10px",
+            marginTop: "1.5rem",
         }}>
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-start", justifyContent: "space-between", gap: "8px", marginBottom: "10px" }}>
-                <h2 style={{ fontSize: "18px", fontWeight: 500, margin: 0 }}>{project.title}</h2>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                    {project.tags.map(t => <Tag key={t.label} {...t} />)}
+            {linkable.map(p => (
+                <div
+                    key={p.title}
+                    style={{
+                        border: "0.5px solid #dee2e6",
+                        borderRadius: "10px",
+                        padding: "12px 14px",
+                        background: "#fff",
+                    }}
+                >
+                    <div style={{ fontSize: "13px", fontWeight: 500, color: "#212529", marginBottom: "8px" }}>
+                        {p.title}
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                        {p.link && (
+                            <a
+                                href={p.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ fontSize: "12px", color: "#0d6efd", textDecoration: "none" }}
+                            >
+                                {p.link.replace("https://", "")} →
+                            </a>
+                        )}
+                        {p.secondaryLink && (
+                            <a
+                                href={p.secondaryLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ fontSize: "12px", color: "#0d6efd", textDecoration: "none" }}
+                            >
+                                {p.secondaryLink.replace("https://", "")} →
+                            </a>
+                        )}
+                        {p.githubUrl && (
+                            <a
+                                href={p.githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ fontSize: "12px", color: "#6c757d", textDecoration: "none" }}
+                            >
+                                {p.githubUrl.replace("https://github.com/", "github.com/")} →
+                            </a>
+                        )}
+                    </div>
                 </div>
-            </div>
-            <p style={{ fontSize: "13px", color: "#6c757d", marginBottom: "1rem", fontStyle: "italic" }}>
-                Goal: {project.goal}
-            </p>
-            <ul style={{ paddingLeft: "1.1rem", display: "flex", flexDirection: "column", gap: "6px", margin: 0 }}>
-                {project.bullets.map((b, i) => (
-                    <li key={i} style={{ fontSize: "13px", color: "#495057", lineHeight: 1.6 }}>{b}</li>
-                ))}
-            </ul>
+            ))}
         </div>
-    );
-}
-
-// --- Project card ---
-function ProjectCard({ project, delay }) {
-    const [open, setOpen] = useState(false);
-    return (
-        <Reveal delay={delay}>
-            <div style={{
-                border: "0.5px solid #dee2e6",
-                borderRadius: "12px",
-                padding: "1.25rem",
-                background: "#fff",
-                height: "100%",
-                cursor: "pointer",
-                transition: "border-color 0.2s",
-            }}
-                onMouseEnter={e => e.currentTarget.style.borderColor = "#85B7EB"}
-                onMouseLeave={e => e.currentTarget.style.borderColor = "#dee2e6"}
-                onClick={() => setOpen(o => !o)}
-            >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "8px", marginBottom: "8px" }}>
-                    <h3 style={{ fontSize: "15px", fontWeight: 500, margin: 0, color: "#212529" }}>{project.title}</h3>
-                    <span style={{
-                        fontSize: "10px", color: "#adb5bd", flexShrink: 0, paddingTop: "3px",
-                        transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s",
-                    }}>▼</span>
-                </div>
-
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "10px" }}>
-                    {project.tags.map(t => <Tag key={t.label} {...t} />)}
-                </div>
-
-                <p style={{ fontSize: "13px", color: "#6c757d", margin: 0, fontStyle: "italic", lineHeight: 1.5 }}>
-                    {project.goal}
-                </p>
-
-                <div style={{
-                    overflow: "hidden", maxHeight: open ? "400px" : "0px",
-                    opacity: open ? 1 : 0, transition: "max-height 0.4s ease, opacity 0.3s ease",
-                }}>
-                    <ul style={{ paddingLeft: "1.1rem", marginTop: "12px", display: "flex", flexDirection: "column", gap: "6px", marginBottom: 0 }}>
-                        {project.bullets.map((b, i) => (
-                            <li key={i} style={{ fontSize: "13px", color: "#495057", lineHeight: 1.6 }}>{b}</li>
-                        ))}
-                    </ul>
-                    {project.notice && (
-                        <div style={{
-                            marginTop: "12px", padding: "6px 10px", borderRadius: "6px",
-                            background: "#fff3cd", border: "0.5px solid #ffc107",
-                            fontSize: "12px", color: "#856404",
-                        }}>
-                            {project.notice}
-                        </div>
-                    )}
-                    {project.link && !project.notice && (
-                        <a href={project.link} style={{ display: "inline-block", marginTop: "10px", fontSize: "13px", color: "#0d6efd" }}
-                            onClick={e => e.stopPropagation()}>
-                            {project.link} →
-                        </a>
-                    )}
-                </div>
-            </div>
-        </Reveal>
     );
 }
 
 // --- Main ---
 const Projects = () => {
     return (
-        <Container className="p-4 shadow-lg w-50">
+        <Container className="p-4 shadow-lg" style={{ maxWidth: "900px", width: "100%", margin: "0 auto" }}>
 
             <Reveal delay={0}>
                 <SectionTitle>Technical Projects & Labs</SectionTitle>
-                <FeaturedProject project={FEATURED} />
+                <ProjectGallery projects={CARDS} />
+                <ProjectLinks projects={CARDS} />
             </Reveal>
-
-            <Reveal delay={80}>
-                <SectionTitle>More Projects</SectionTitle>
-            </Reveal>
-
-            <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                gap: "1rem",
-            }}>
-                {CARDS.map((p, i) => (
-                    <ProjectCard key={p.title} project={p} delay={100 + i * 60} />
-                ))}
-            </div>
 
         </Container>
     );
