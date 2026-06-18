@@ -17,6 +17,10 @@ const CARDS = [
             "Hosts use ext4 filesystems; cluster networking configured with standard CNI.",
             "Automated cluster provisioning and configuration via Ansible (ansible-kubernetes on GitHub).",
         ],
+        stats: [
+            { label: "Nodes", value: "3" },
+            { label: "Provisioning", value: "Ansible" },
+        ],
         githubUrl: "https://github.com/zemation/ansible-kubernetes",
     },
     {
@@ -33,6 +37,10 @@ const CARDS = [
             "Alertmanager integrated with Discord webhooks for real-time notifications.",
             "Blackbox exporter monitors external site availability.",
         ],
+        stats: [
+            { label: "Alerts via", value: "Discord" },
+            { label: "Exporters", value: "3" },
+        ],
     },
     {
         title: "CI/CD Pipelines",
@@ -46,6 +54,10 @@ const CARDS = [
             "acloudengineer.com: React app — pipeline triggers on PR submit, builds and deploys to Digital Ocean droplet.",
             "cloud-master.io: separate Jenkinsfiles for the Vite/React frontend and Node.js backend.",
             "Pipelines deploy via CloudPanel on the production droplet.",
+        ],
+        stats: [
+            { label: "Trigger", value: "PR merge" },
+            { label: "Pipelines", value: "3" },
         ],
     },
     {
@@ -61,6 +73,10 @@ const CARDS = [
             "cloud-master.io — frontend in Vite/React, backend Node.js + MongoDB at api.cloud-master.io.",
             "APM metrics for the Node backend wired into Grafana.",
             "Content actively being added to cloud-master.io.",
+        ],
+        stats: [
+            { label: "Sites live", value: "2" },
+            { label: "Backend", value: "Node + Mongo" },
         ],
         link: "https://cloud-master.io",
         secondaryLink: "https://www.acloudengineer.com",
@@ -80,6 +96,10 @@ const CARDS = [
             "Both repos public on GitHub (github.com/zemation), cleaned up and documented.",
             "Backlog: add HAProxy load balancer role to ansible-learnlinux.",
         ],
+        stats: [
+            { label: "Repos", value: "2" },
+            { label: "Distros", value: "Rocky · Ubuntu" },
+        ],
         githubUrl: "https://github.com/zemation/ansible-learnlinux",
     },
     {
@@ -92,11 +112,15 @@ const CARDS = [
             { label: "WIP", color: "amber" },
         ],
         bullets: [
-            "Reads directly from /proc and /sys — no external dependencies for data collection.",
+            "Reads directly from /proc and /sys for data collection — no external libraries needed for that part.",
             "Subcommand structure via Cobra: sysinfo, sysinfo processes cpu, sysinfo processes memory, sysinfo network.",
             "GitHub Actions workflows and releases configured.",
             "Published to GitHub (zemation/sysinfo) with full README and PDF guide.",
             "Planned: macOS and Windows support via Go build tags.",
+        ],
+        stats: [
+            { label: "Language", value: "Go" },
+            { label: "Subcommands", value: "4" },
         ],
         githubUrl: "https://github.com/zemation/sysinfo",
     },
@@ -112,6 +136,10 @@ const CARDS = [
             "AWS Cloud Practitioner — passed May 13, 2026.",
             "AZ-900 (Microsoft Azure Fundamentals) — in progress.",
             "Kubernetes and Cloud Native Associate (KCNA) — in progress.",
+        ],
+        stats: [
+            { label: "Passed", value: "1" },
+            { label: "In progress", value: "2" },
         ],
     },
     {
@@ -129,6 +157,10 @@ const CARDS = [
             "SSH key lookup references existing key registered in DigitalOcean account.",
             "Published to GitHub (zemation/terraform-digital-ocean).",
         ],
+        stats: [
+            { label: "Provider", value: "DigitalOcean" },
+            { label: "Bootstrap", value: "cloud-init" },
+        ],
         githubUrl: "https://github.com/zemation/terraform-digital-ocean",
     },
     {
@@ -145,6 +177,10 @@ const CARDS = [
             "Remote state stored in S3 with DynamoDB state locking.",
             "cloud-init bootstraps the EC2 instance on first boot — installs sysinfo CLI tool automatically.",
             "Published to GitHub (zemation/terraform-aws).",
+        ],
+        stats: [
+            { label: "State backend", value: "S3 + DynamoDB" },
+            { label: "AMI", value: "Ubuntu 24.04" },
         ],
         githubUrl: "https://github.com/zemation/terraform-aws",
     },
@@ -243,7 +279,7 @@ function ProjectLinks({ projects }) {
                                 href={p.githubUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                style={{ fontSize: "12px", color: "#6c757d", textDecoration: "none" }}
+                                style={{ fontSize: "12px", color: "#0d6efd", textDecoration: "none" }}
                             >
                                 {p.githubUrl.replace("https://github.com/", "github.com/")} →
                             </a>
