@@ -5,23 +5,43 @@ import ProjectGallery from "./ProjectGallery";
 // --- Data ---
 const CARDS = [
     {
+        title: "Cobbler — PXE Boot Imaging",
+        goal: "Automated bare-metal OS provisioning for the home lab via network boot, eliminating manual installs.",
+        tags: [
+            { label: "Cobbler", color: "coral" },
+            { label: "PXE", color: "blue" },
+            { label: "Active", color: "green" },
+        ],
+        bullets: [
+            "Cobbler server configured to PXE-boot bare-metal nodes over the network — no USB installer required.",
+            "Automatically images the Dell Optiplex nodes that make up the Kubernetes cluster.",
+            "Kickstart/preseed profiles define the OS install non-interactively, ensuring every node starts from an identical baseline.",
+            "A node can be wiped and re-imaged from scratch in the time it takes to reboot and PXE-boot — useful when testing cluster rebuilds.",
+            "Sits underneath Ansible in the stack: Cobbler images the bare metal, then Ansible takes over for configuration and kubeadm setup.",
+        ],
+        stats: [
+            { label: "Boot method", value: "PXE" },
+            { label: "Nodes imaged", value: "3" },
+        ],
+    },
+    {
         title: "Kubernetes Cluster & Core Infrastructure",
         goal: "Establish a self-hosted Kubernetes cluster for development and production workloads.",
         tags: [
             { label: "Kubernetes", color: "teal" },
-            { label: "Ansible", color: "purple" },
             { label: "Active", color: "green" },
         ],
         bullets: [
             "Provisioned a 3-node Kubernetes cluster (1 master, 2 workers) on Dell Optiplex nodes using kubeadm.",
             "Hosts use ext4 filesystems; cluster networking configured with standard CNI.",
-            "Automated cluster provisioning and configuration via Ansible (ansible-kubernetes on GitHub).",
+            "Nodes imaged via Cobbler/PXE boot, then configured via a dedicated Ansible playbook (see respective cards).",
+            "Serves as the foundation for self-hosted workloads, including the monitoring stack and future application deployments.",
+            "Hardware repurposed from decommissioned Dell Optiplex desktops — a cost-effective home lab build.",
         ],
         stats: [
             { label: "Nodes", value: "3" },
-            { label: "Provisioning", value: "Ansible" },
+            { label: "Roles", value: "1 master · 2 workers" },
         ],
-        githubUrl: "https://github.com/zemation/ansible-kubernetes",
     },
     {
         title: "Monitoring & Observability Stack",
@@ -83,7 +103,7 @@ const CARDS = [
     },
     {
         title: "Ansible Automation",
-        goal: "Infrastructure-as-code for provisioning and configuring servers across multiple Linux distributions.",
+        goal: "Infrastructure-as-code for provisioning servers and Kubernetes clusters across multiple Linux distributions.",
         tags: [
             { label: "Ansible", color: "purple" },
             { label: "Infrastructure", color: "blue" },
@@ -91,9 +111,10 @@ const CARDS = [
             { label: "WIP", color: "amber" },
         ],
         bullets: [
+            "ansible-kubernetes: automates full Kubernetes cluster provisioning — kubeadm init/join, CNI setup, and node configuration.",
             "ansible-learnlinux: multi-distro automation with Vagrant, provisioning web, database, and file servers across Rocky Linux and Ubuntu.",
-            "ansible-kubernetes: automated Kubernetes cluster deployment and configuration.",
-            "Both repos public on GitHub (github.com/zemation), cleaned up and documented.",
+            "Idempotent playbooks — safe to re-run against existing infrastructure without unintended side effects.",
+            "Both repos public on GitHub (github.com/zemation), cleaned up and documented with READMEs.",
             "Backlog: add HAProxy load balancer role to ansible-learnlinux.",
         ],
         stats: [
@@ -101,6 +122,7 @@ const CARDS = [
             { label: "Distros", value: "Rocky · Ubuntu" },
         ],
         githubUrl: "https://github.com/zemation/ansible-learnlinux",
+        secondaryGithubUrl: "https://github.com/zemation/ansible-kubernetes",
     },
     {
         title: "sysinfo — Go CLI Tool",
@@ -136,6 +158,8 @@ const CARDS = [
             "AWS Cloud Practitioner — passed May 13, 2026.",
             "AZ-900 (Microsoft Azure Fundamentals) — in progress.",
             "Kubernetes and Cloud Native Associate (KCNA) — in progress.",
+            "Certifications chosen to complement hands-on infrastructure work rather than replace it.",
+            "Next up: targeting a hands-on AWS associate-level certification once the multi-cloud Terraform work matures.",
         ],
         stats: [
             { label: "Passed", value: "1" },
@@ -143,46 +167,27 @@ const CARDS = [
         ],
     },
     {
-        title: "Terraform — Digital Ocean",
-        goal: "Provision a DigitalOcean droplet using Terraform with cloud-init bootstrapping on first boot.",
+        title: "Terraform — Multi-Cloud Provisioning",
+        goal: "Infrastructure-as-code modules provisioning compute environments across four cloud providers.",
         tags: [
             { label: "Terraform", color: "purple" },
             { label: "Infrastructure", color: "blue" },
             { label: "WIP", color: "amber" },
         ],
         bullets: [
-            "Provisions a DigitalOcean droplet using the official Terraform provider.",
-            "cloud-init bootstraps the server on first boot — installs sysinfo CLI tool automatically via GitHub releases.",
-            "Variables-driven — image, size, region, and sysinfo version all configurable via terraform.tfvars.",
-            "SSH key lookup references existing key registered in DigitalOcean account.",
-            "Published to GitHub (zemation/terraform-digital-ocean).",
+            "DigitalOcean: provisions a droplet via the official provider, with cloud-init bootstrapping sysinfo on first boot.",
+            "AWS: full environment — VPC, public subnet, IGW, route tables, security groups, IAM role, EC2 instance. Remote state in S3 with DynamoDB locking.",
+            "Azure: [add specifics — e.g. resource group, VNet, NSG, VM provisioning].",
+            "GCP: [add specifics — e.g. VPC network, firewall rules, Compute Engine instance].",
+            "Variables-driven across all four — image/SKU, size, and region configurable via .tfvars per provider.",
+            "Each module published to its own GitHub repo (zemation/terraform-*) with cloud-init bootstrapping where supported.",
         ],
         stats: [
-            { label: "Provider", value: "DigitalOcean" },
-            { label: "Bootstrap", value: "cloud-init" },
-        ],
-        githubUrl: "https://github.com/zemation/terraform-digital-ocean",
-    },
-    {
-        title: "Terraform — AWS",
-        goal: "Provision a full AWS environment using Terraform with remote state management.",
-        tags: [
-            { label: "Terraform", color: "purple" },
-            { label: "Infrastructure", color: "blue" },
-            { label: "WIP", color: "amber" },
-        ],
-        bullets: [
-            "Provisions a complete AWS environment: VPC, public subnet, internet gateway, route tables, security groups, IAM role, and EC2 instance.",
-            "AMI dynamically looked up — always pulls the latest Ubuntu 24.04 LTS from Canonical.",
-            "Remote state stored in S3 with DynamoDB state locking.",
-            "cloud-init bootstraps the EC2 instance on first boot — installs sysinfo CLI tool automatically.",
-            "Published to GitHub (zemation/terraform-aws).",
-        ],
-        stats: [
+            { label: "Providers", value: "4" },
             { label: "State backend", value: "S3 + DynamoDB" },
-            { label: "AMI", value: "Ubuntu 24.04" },
         ],
         githubUrl: "https://github.com/zemation/terraform-aws",
+        secondaryGithubUrl: "https://github.com/zemation/terraform-digital-ocean",
     },
 ];
 
@@ -230,7 +235,7 @@ function SectionTitle({ children }) {
 // no visual cue on the card itself, silently does nothing for projects
 // without a link) so actual navigation lives here instead. ---
 function ProjectLinks({ projects }) {
-    const linkable = projects.filter(p => p.link || p.githubUrl);
+    const linkable = projects.filter(p => p.link || p.githubUrl || p.secondaryGithubUrl);
     if (linkable.length === 0) return null;
 
     return (
@@ -282,6 +287,16 @@ function ProjectLinks({ projects }) {
                                 style={{ fontSize: "12px", color: "#0d6efd", textDecoration: "none" }}
                             >
                                 {p.githubUrl.replace("https://github.com/", "github.com/")} →
+                            </a>
+                        )}
+                        {p.secondaryGithubUrl && (
+                            <a
+                                href={p.secondaryGithubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ fontSize: "12px", color: "#0d6efd", textDecoration: "none" }}
+                            >
+                                {p.secondaryGithubUrl.replace("https://github.com/", "github.com/")} →
                             </a>
                         )}
                     </div>

@@ -239,9 +239,10 @@ export default function ParticleHero() {
           lineHeight: 1.7,
           marginBottom: "32px",
         }}>
-          DevOps and systems administration — Kubernetes, CI/CD pipelines,
-          Ansible automation, Prometheus and Grafana monitoring, and
-          React applications built and shipped end to end.
+          A cloud and systems engineer focused on DevOps — building and
+          automating infrastructure with Ansible, monitoring it with
+          Prometheus and Grafana, shipping it through CI/CD pipelines,
+          and running it all on a self-hosted Kubernetes cluster.
         </p>
 
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", justifyContent: "center", pointerEvents: "auto" }}>

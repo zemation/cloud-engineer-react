@@ -67,10 +67,10 @@ function buildCardTexture(project, accentHex) {
     const bulletAreaBottom = H - 72 - statsAreaHeight;
 
     // Bullet list — dynamically sized font/line-height so all bullets fit
-    // regardless of how many a given project has (3 to 5 bullets across projects)
+    // regardless of how many a given project has (3 to 6 bullets across projects)
     const bullets = project.bullets || [];
-    const lineHeight = bullets.length > 4 ? 22 : 25;
-    const fontSize = bullets.length > 4 ? 16 : 17;
+    const lineHeight = bullets.length > 5 ? 19 : bullets.length > 4 ? 22 : 25;
+    const fontSize = bullets.length > 5 ? 14 : bullets.length > 4 ? 16 : 17;
     ctx.font = `400 ${fontSize}px 'Segoe UI', sans-serif`;
     ctx.fillStyle = "#c9d1d9";
 
@@ -438,7 +438,7 @@ export default function ProjectGallery({ projects }) {
         const onMove = e => {
             if (!isDragging) return;
             const dx = e.clientX - lastX;
-            velY = dx * 0.0045;
+            velY = dx * 0.002;
             rotY += velY;
             lastX = e.clientX;
         };
