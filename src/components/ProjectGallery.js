@@ -3,12 +3,12 @@ import * as THREE from "three";
 
 // --- Tag color map (mirrors Projects.js TAG_COLORS, used when drawing canvas textures) ---
 const TAG_COLORS = {
-    blue:    { bg: "#0C447C", text: "#B5D4F4" },
-    teal:    { bg: "#085041", text: "#9FE1CB" },
-    green:   { bg: "#27500A", text: "#C0DD97" },
-    purple:  { bg: "#3C3489", text: "#CECBF6" },
-    amber:   { bg: "#633806", text: "#FAC775" },
-    coral:   { bg: "#712B13", text: "#F5C4B3" },
+    blue: { bg: "#0C447C", text: "#B5D4F4" },
+    teal: { bg: "#085041", text: "#9FE1CB" },
+    green: { bg: "#27500A", text: "#C0DD97" },
+    purple: { bg: "#3C3489", text: "#CECBF6" },
+    amber: { bg: "#633806", text: "#FAC775" },
+    coral: { bg: "#712B13", text: "#F5C4B3" },
     warning: { bg: "#664d03", text: "#ffe69c" },
     secondary: { bg: "#444441", text: "#D3D1C7" },
 };
@@ -223,7 +223,7 @@ export default function ProjectGallery({ projects }) {
         renderer.setSize(size.W, size.H);
         renderer.setClearColor(0x05070d, 1);
 
-        const scene  = new THREE.Scene();
+        const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(50, size.W / size.H, 0.1, 100);
         camera.position.set(0, 0, 13);
 
