@@ -190,7 +190,7 @@ const ACCENT_COLORS = ["#1D9E75", "#378ADD", "#7F77DD", "#EF9F27", "#D85A30"];
 // plain solid shape, since wrapping text onto a figure-8's curved surface
 // inevitably twists/rotates the letters as the curve's direction changes
 // (the loop's direction of travel sweeps a full 360° to trace both lobes).
-const HUB_COLOR = 0x4169E1; // royal blue
+const HUB_COLOR = 0x5B7FE8; // royal blue, lightened for better visibility under metalness
 
 export default function ProjectGallery({ projects }) {
     const wrapRef = useRef(null);
@@ -228,66 +228,104 @@ export default function ProjectGallery({ projects }) {
         const camera = new THREE.PerspectiveCamera(50, size.W / size.H, 0.1, 100);
         camera.position.set(0, 0, 13);
 
-        scene.add(new THREE.AmbientLight(0xffffff, 0.9));
-        const key = new THREE.PointLight(0xffffff, 1.2);
-        key.position.set(4, 6, 8);
+        scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+        const key = new THREE.PointLight(0xffffff, 4);
+        key.position.set(3, 4, 6);
         scene.add(key);
+        // Fill light from the opposite side, slightly cool-toned — helps the
+        // hub's clearcoat finish show a visible highlight sweep rather than
+        // looking flat from angles the key light doesn't reach directly
+        const fill = new THREE.PointLight(0xaaccff, 5);
+        fill.position.set(-3, -2, 5);
+        scene.add(fill);
 
         // --- Central infinity-loop hub ---
-        // Built as a custom flat ribbon (not TubeGeometry) tracing a figure-8
-        // (lemniscate) curve. A flat ribbon has no twist to fight: every
-        // segment's face simply points toward +Z, since the whole curve lies
-        // flat in the XY plane — this is built manually as a BufferGeometry
-        // of quads rather than relying on TubeGeometry's rotating Frenet frame.
+        // Built as a custom tube (not THREE.TubeGeometry) tracing a figure-8
+        // (lemniscate) curve. At each point along the curve we generate a small
+        // ring of vertices around a circular cross-section, oriented using a 2D
+        // tangent computed purely in the flat XY plane — this avoids the twisting
+        // problem THREE.TubeGeometry has on self-intersecting curves (its Frenet
+        // frame rotates unpredictably), since our tangent calculation never needs
+        // to track 3D orientation changes, only a 2D direction of travel.
+        //
+        // Earlier version: a flat ribbon (just 2 vertices per point, zero Z depth)
+        // looked completely flat under lighting because computeVertexNormals() on
+        // a perfectly flat mesh produces identical normals everywhere — there's no
+        // curvature for a clearcoat highlight to move across. This version gives
+        // the loop real thickness so light (and the clearcoat reflection) varies
+        // naturally across its surface, like an actual physical tube.
+        // Lemniscate of Bernoulli — a single continuous curve (no seams to kink
+        // at the crossing point, unlike stitching two separate circles together)
+        // that naturally produces rounder, more circular-looking loops than the
+        // lemniscate of Gerono used previously, which had more pointed/pinched
+        // lobes. This is the curve classically associated with the infinity symbol.
         function lemniscatePoint(t) {
             const angle = t * Math.PI * 2;
-            const scale = 1.9;
+            const a = 2.2; // overall size
+            const denom = 1 + Math.sin(angle) * Math.sin(angle);
             return {
-                x: scale * Math.sin(angle),
-                y: scale * Math.sin(angle) * Math.cos(angle),
+                x: (a * Math.cos(angle)) / denom,
+                y: (a * Math.cos(angle) * Math.sin(angle)) / denom,
             };
         }
 
-        const RIBBON_SEGMENTS = 200;
-        const RIBBON_HALF_WIDTH = 0.34;
+        const TUBE_SEGMENTS = 200;   // points sampled along the loop's length
+        const TUBE_RADIUS = 0.3;     // thickness of the tube's circular cross-section
+        const RADIAL_SEGMENTS = 12;  // vertices around each cross-section ring
 
         const ribbonPositions = [];
         const ribbonIndices = [];
 
-        for (let i = 0; i <= RIBBON_SEGMENTS; i++) {
-            const t = i / RIBBON_SEGMENTS;
-            const tNext = ((i + 1) % RIBBON_SEGMENTS) / RIBBON_SEGMENTS;
-            const tPrev = ((i - 1 + RIBBON_SEGMENTS) % RIBBON_SEGMENTS) / RIBBON_SEGMENTS;
+        for (let i = 0; i <= TUBE_SEGMENTS; i++) {
+            const t = i / TUBE_SEGMENTS;
+            const tNext = ((i + 1) % TUBE_SEGMENTS) / TUBE_SEGMENTS;
+            const tPrev = ((i - 1 + TUBE_SEGMENTS) % TUBE_SEGMENTS) / TUBE_SEGMENTS;
 
             const p = lemniscatePoint(t);
             const pNext = lemniscatePoint(tNext);
             const pPrev = lemniscatePoint(tPrev);
 
-            // Tangent direction = average of incoming/outgoing direction, for a smooth ribbon
+            // 2D tangent direction (purely in the flat XY plane the curve lies in)
             const dx = pNext.x - pPrev.x;
             const dy = pNext.y - pPrev.y;
             const len = Math.sqrt(dx * dx + dy * dy) || 1;
             const tangentX = dx / len;
             const tangentY = dy / len;
 
-            // Perpendicular to the tangent, in the same flat XY plane — this is
-            // the direction the ribbon's width extends in, a simple 90° rotation
+            // The cross-section ring at this point sits in the plane perpendicular
+            // to the tangent. Since the tangent is a 2D direction (always within
+            // the XY plane, never tilting into Z), the perpendicular plane is
+            // simply spanned by: (a) the in-plane normal (90° rotation of tangent,
+            // still in XY) and (b) the Z axis directly. This is what keeps the
+            // cross-section from twisting — both basis vectors are geometrically
+            // fixed relative to the flat curve, with no rotating 3D frame involved.
             const normalX = -tangentY;
             const normalY = tangentX;
 
-            const leftX = p.x + normalX * RIBBON_HALF_WIDTH;
-            const leftY = p.y + normalY * RIBBON_HALF_WIDTH;
-            const rightX = p.x - normalX * RIBBON_HALF_WIDTH;
-            const rightY = p.y - normalY * RIBBON_HALF_WIDTH;
-
-            ribbonPositions.push(leftX, leftY, 0);
-            ribbonPositions.push(rightX, rightY, 0);
+            for (let r = 0; r < RADIAL_SEGMENTS; r++) {
+                const ringAngle = (r / RADIAL_SEGMENTS) * Math.PI * 2;
+                const cosA = Math.cos(ringAngle);
+                const sinA = Math.sin(ringAngle);
+                // Offset = cos(ringAngle) * inPlaneNormal + sin(ringAngle) * Z axis
+                const offX = normalX * cosA * TUBE_RADIUS;
+                const offY = normalY * cosA * TUBE_RADIUS;
+                const offZ = sinA * TUBE_RADIUS;
+                ribbonPositions.push(p.x + offX, p.y + offY, offZ);
+            }
         }
 
-        for (let i = 0; i < RIBBON_SEGMENTS; i++) {
-            const a = i * 2, b = i * 2 + 1, c = (i + 1) * 2, d = (i + 1) * 2 + 1;
-            ribbonIndices.push(a, b, c);
-            ribbonIndices.push(b, d, c);
+        // Connect each ring to the next ring with quads, wrapping around both
+        // the tube's length (i) and its circumference (r)
+        for (let i = 0; i < TUBE_SEGMENTS; i++) {
+            for (let r = 0; r < RADIAL_SEGMENTS; r++) {
+                const rNext = (r + 1) % RADIAL_SEGMENTS;
+                const a = i * RADIAL_SEGMENTS + r;
+                const b = i * RADIAL_SEGMENTS + rNext;
+                const c = (i + 1) * RADIAL_SEGMENTS + r;
+                const d = (i + 1) * RADIAL_SEGMENTS + rNext;
+                ribbonIndices.push(a, b, c);
+                ribbonIndices.push(b, d, c);
+            }
         }
 
         const hubGeo = new THREE.BufferGeometry();
@@ -295,13 +333,17 @@ export default function ProjectGallery({ projects }) {
         hubGeo.setIndex(ribbonIndices);
         hubGeo.computeVertexNormals();
 
-        // Plain solid royal blue — lit by the scene's lights for real shading
-        const hubMat = new THREE.MeshStandardMaterial({
+        // Solid royal blue with a glossy clearcoat finish — MeshPhysicalMaterial
+        // extends MeshStandardMaterial with a clearcoat layer (like polished car
+        // paint or a glossy plastic badge), giving crisp specular highlights from
+        // the scene's lights without needing an environment map for reflections.
+        const hubMat = new THREE.MeshPhysicalMaterial({
             color: HUB_COLOR,
-            roughness: 0.4,
-            metalness: 0.15,
+            roughness: 0.08,
+            metalness: 0.35,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.03,
             side: THREE.DoubleSide,
-            wireframe: true,
         });
         const hub = new THREE.Mesh(hubGeo, hubMat);
         // Slight tilt so the ribbon shows real depth rather than looking like
@@ -426,7 +468,7 @@ export default function ProjectGallery({ projects }) {
         let pulseT = 0;
         function animate() {
             animRef.current = requestAnimationFrame(animate);
-            pulseT += 0.1;
+            pulseT += 0.06;
 
             // Auto-rotation only applies when autoRotateRef.current is true —
             // toggled off automatically on first drag/scroll, or manually via the button.
