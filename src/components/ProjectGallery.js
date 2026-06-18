@@ -301,6 +301,7 @@ export default function ProjectGallery({ projects }) {
             roughness: 0.4,
             metalness: 0.15,
             side: THREE.DoubleSide,
+            wireframe: true,
         });
         const hub = new THREE.Mesh(hubGeo, hubMat);
         // Slight tilt so the ribbon shows real depth rather than looking like
@@ -422,8 +423,10 @@ export default function ProjectGallery({ projects }) {
         };
         window.addEventListener("resize", onResize);
 
+        let pulseT = 0;
         function animate() {
             animRef.current = requestAnimationFrame(animate);
+            pulseT += 0.1;
 
             // Auto-rotation only applies when autoRotateRef.current is true —
             // toggled off automatically on first drag/scroll, or manually via the button.
@@ -432,8 +435,11 @@ export default function ProjectGallery({ projects }) {
             velY *= 0.92;
             group.rotation.y = rotY;
 
-            // The hub stays completely static — no rotation at all — so it
-            // reads as a fixed logo badge facing the camera.
+            // The hub stays completely static in rotation — no spin — but
+            // gently pulsates in scale via a sine wave, giving it a subtle
+            // sense of life without distracting from the cards.
+            const pulseScale = 1 + Math.sin(pulseT) * 0.04;
+            hub.scale.setScalar(pulseScale);
 
             renderer.render(scene, camera);
         }

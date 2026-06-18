@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-// Particle count — reduce if needed for performance
-const COUNT = 1200;
+// Particle count — reduced from 1200 to keep the field calm rather than dense
+const COUNT = 500;
 // How many particles to check for connections (O(n²) so keep this under ~400)
-const LINE_SAMPLE = 140;
+const LINE_SAMPLE = 70;
 // Only recompute the connection lines every N frames — distance checks are O(n^2)
 // and don't need to update every frame to look smooth
 const LINE_UPDATE_INTERVAL = 4;
@@ -26,8 +26,9 @@ export default function ParticleHero() {
   useEffect(() => {
     const wrap = wrapRef.current;
     if (!wrap) return;
-    const W = wrap.clientWidth;
-    const H = wrap.clientHeight;
+    // Mutable size object so onResize and onMouseMove always read the
+    // current dimensions, not a stale snapshot from mount time
+    const size = { W: wrap.clientWidth, H: wrap.clientHeight };
 
     // --- Renderer ---
     // alpha: false because we own the background color (#0a0e1a)
@@ -37,11 +38,11 @@ export default function ParticleHero() {
       alpha: false,
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(W, H);
+    renderer.setSize(size.W, size.H);
     renderer.setClearColor(0x0a0e1a, 1);
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(60, size.W / size.H, 0.1, 1000);
     camera.position.z = 200;
 
     // --- Particle data ---
@@ -74,10 +75,10 @@ export default function ParticleHero() {
     geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
     const mat = new THREE.PointsMaterial({
-      size: 1.8,
+      size: 1.4,
       vertexColors: true,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.45,
       sizeAttenuation: true,  // particles further away appear smaller
     });
 
@@ -91,7 +92,7 @@ export default function ParticleHero() {
     const lineBuf = new Float32Array(LINE_SAMPLE * LINE_SAMPLE * 6);
     const lgeo = new THREE.BufferGeometry();
     lgeo.setAttribute("position", new THREE.BufferAttribute(lineBuf, 3));
-    const lmat = new THREE.LineBasicMaterial({ color: 0x1D9E75, transparent: true, opacity: 0.07 });
+    const lmat = new THREE.LineBasicMaterial({ color: 0x1D9E75, transparent: true, opacity: 0.035 });
     const lsegs = new THREE.LineSegments(lgeo, lmat);
     scene.add(lsegs);
 
@@ -101,17 +102,29 @@ export default function ParticleHero() {
 
     const onMouseMove = e => {
       const r = wrap.getBoundingClientRect();
-      mx = ((e.clientX - r.left) / W - 0.5) * 2;
-      my = ((e.clientY - r.top) / H - 0.5) * 2;
+      mx = ((e.clientX - r.left) / size.W - 0.5) * 2;
+      my = ((e.clientY - r.top) / size.H - 0.5) * 2;
     };
     wrap.addEventListener("mousemove", onMouseMove);
+
+    // --- Resize handling ---
+    // Without this, resizing the browser window stretches/distorts the canvas
+    // because the renderer and camera keep using the dimensions from mount time
+    const onResize = () => {
+      size.W = wrap.clientWidth;
+      size.H = wrap.clientHeight;
+      camera.aspect = size.W / size.H;
+      camera.updateProjectionMatrix();
+      renderer.setSize(size.W, size.H);
+    };
+    window.addEventListener("resize", onResize);
 
     // --- Animation loop ---
     let t = 0;
     let frame = 0;
     function animate() {
       animRef.current = requestAnimationFrame(animate);
-      t += 0.004;
+      t += 0.0025;
 
       // Move each particle: velocity + spring-back toward home + sine breathing
       for (let i = 0; i < COUNT; i++) {
@@ -165,6 +178,7 @@ export default function ParticleHero() {
 
     return () => {
       cancelAnimationFrame(animRef.current);
+      window.removeEventListener("resize", onResize);
       wrap.removeEventListener("mousemove", onMouseMove);
       renderer.dispose();
       geo.dispose();
@@ -180,13 +194,22 @@ export default function ParticleHero() {
       style={{
         position: "relative",
         width: "100%",
-        height: "100vh",
+        height: "calc(100vh - 64px)",
         minHeight: "500px",
         background: "#0a0e1a",
         overflow: "hidden",
       }}
     >
       <canvas style={{ display: "block", width: "100%", height: "100%" }} />
+
+      {/* Vignette — darkens the center where the text sits, so the title
+                and subtitle always have a calm backdrop regardless of where
+                particles happen to be at any given moment */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "radial-gradient(ellipse 60% 55% at 50% 50%, rgba(10,14,26,0.75) 0%, rgba(10,14,26,0.35) 45%, rgba(10,14,26,0) 75%)",
+        pointerEvents: "none",
+      }} />
 
       {/* Hero text overlay — sits on top of the canvas */}
       <div style={{
