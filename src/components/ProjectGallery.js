@@ -45,7 +45,7 @@ function buildCardTexture(project, accentHex) {
     ctx.font = "600 32px 'Segoe UI', sans-serif";
     let cursorY = wrapText(ctx, project.title, 36, 66, W - 72, 38, 2);
 
-    // Goal / description (italic-style via font, since canvas has no italic shorthand issues)
+    // Goal / description
     cursorY += 18;
     ctx.fillStyle = "#8b949e";
     ctx.font = "400 19px 'Segoe UI', sans-serif";
@@ -186,16 +186,15 @@ const wrapTextWithLimit = wrapText;
 
 const ACCENT_COLORS = ["#1D9E75", "#378ADD", "#7F77DD", "#EF9F27", "#D85A30"];
 
-// DevOps lifecycle stages, in order around the infinity loop — module-level
-// since both the Three.js setup (positioning) and the JSX return (rendering
-// the label divs) need access to the same list
-const DEVOPS_STAGES = ["Plan", "Code", "Build", "Test", "Release", "Deploy", "Operate", "Monitor"];
+// Royal blue for the central infinity-loop hub. No text on it — kept as a
+// plain solid shape, since wrapping text onto a figure-8's curved surface
+// inevitably twists/rotates the letters as the curve's direction changes
+// (the loop's direction of travel sweeps a full 360° to trace both lobes).
+const HUB_COLOR = 0x4169E1; // royal blue
 
 export default function ProjectGallery({ projects }) {
     const wrapRef = useRef(null);
     const animRef = useRef(null);
-    // Holds the 8 DevOps stage label <div> DOM nodes, repositioned every frame
-    const stageLabelRefs = useRef([]);
 
     // autoRotateRef is read inside the animation loop every frame — using a ref
     // (rather than state) means toggling it doesn't need to re-run the whole
@@ -212,6 +211,8 @@ export default function ProjectGallery({ projects }) {
     useEffect(() => {
         const wrap = wrapRef.current;
         if (!wrap) return;
+        // Mutable size object so onResize and onMouseMove always read the
+        // current dimensions, not a stale snapshot from mount time
         const size = { W: wrap.clientWidth, H: wrap.clientHeight };
 
         const renderer = new THREE.WebGLRenderer({
@@ -232,16 +233,12 @@ export default function ProjectGallery({ projects }) {
         key.position.set(4, 6, 8);
         scene.add(key);
 
-        // --- DevOps infinity-loop hub — the classic continuous integration /
-        // continuous deployment symbol. Built as a custom flat ribbon (not a
-        // TubeGeometry) because TubeGeometry computes a rotating Frenet frame
-        // along the curve to orient its circular cross-section — on a figure-8
-        // path that frame twists unpredictably, which is what caused the text
-        // texture to appear solid-color from most angles (the readable face
-        // was constantly rotating away from the camera as you moved along the
-        // loop). A flat ribbon has no twist to fight: every segment's face
-        // simply points toward +Z, since the whole curve already lies flat in
-        // the XY plane. This is built manually as a BufferGeometry of quads.
+        // --- Central infinity-loop hub ---
+        // Built as a custom flat ribbon (not TubeGeometry) tracing a figure-8
+        // (lemniscate) curve. A flat ribbon has no twist to fight: every
+        // segment's face simply points toward +Z, since the whole curve lies
+        // flat in the XY plane — this is built manually as a BufferGeometry
+        // of quads rather than relying on TubeGeometry's rotating Frenet frame.
         function lemniscatePoint(t) {
             const angle = t * Math.PI * 2;
             const scale = 1.9;
@@ -252,15 +249,11 @@ export default function ProjectGallery({ projects }) {
         }
 
         const RIBBON_SEGMENTS = 200;
-        const RIBBON_HALF_WIDTH = 0.34; // half the ribbon's thickness, perpendicular to its direction of travel
+        const RIBBON_HALF_WIDTH = 0.34;
 
         const ribbonPositions = [];
-        const ribbonUVs = [];
         const ribbonIndices = [];
 
-        // Sample points slightly ahead/behind each segment to compute a stable
-        // 2D tangent direction (since everything is flat, the tangent is just
-        // a 2D direction vector — no 3D twist math needed at all)
         for (let i = 0; i <= RIBBON_SEGMENTS; i++) {
             const t = i / RIBBON_SEGMENTS;
             const tNext = ((i + 1) % RIBBON_SEGMENTS) / RIBBON_SEGMENTS;
@@ -277,12 +270,11 @@ export default function ProjectGallery({ projects }) {
             const tangentX = dx / len;
             const tangentY = dy / len;
 
-            // Perpendicular (normal) to the tangent, in the same flat XY plane —
-            // this is the direction the ribbon's width extends in, simple 90° rotation
+            // Perpendicular to the tangent, in the same flat XY plane — this is
+            // the direction the ribbon's width extends in, a simple 90° rotation
             const normalX = -tangentY;
             const normalY = tangentX;
 
-            // Two vertices per sample point: one on each side of the centerline
             const leftX = p.x + normalX * RIBBON_HALF_WIDTH;
             const leftY = p.y + normalY * RIBBON_HALF_WIDTH;
             const rightX = p.x - normalX * RIBBON_HALF_WIDTH;
@@ -290,70 +282,35 @@ export default function ProjectGallery({ projects }) {
 
             ribbonPositions.push(leftX, leftY, 0);
             ribbonPositions.push(rightX, rightY, 0);
-
-            // U runs along the ribbon's length (0 to 1 over the full loop);
-            // V is 0 on one edge, 1 on the other — straightforward, no twist
-            ribbonUVs.push(t, 0);
-            ribbonUVs.push(t, 1);
         }
 
-        // Build triangle indices connecting each consecutive pair of left/right
-        // vertices into quads (two triangles each)
         for (let i = 0; i < RIBBON_SEGMENTS; i++) {
             const a = i * 2, b = i * 2 + 1, c = (i + 1) * 2, d = (i + 1) * 2 + 1;
             ribbonIndices.push(a, b, c);
             ribbonIndices.push(b, d, c);
         }
 
-        const torusGeo = new THREE.BufferGeometry();
-        torusGeo.setAttribute("position", new THREE.Float32BufferAttribute(ribbonPositions, 3));
-        torusGeo.setAttribute("uv", new THREE.Float32BufferAttribute(ribbonUVs, 2));
-        torusGeo.setIndex(ribbonIndices);
-        torusGeo.computeVertexNormals();
+        const hubGeo = new THREE.BufferGeometry();
+        hubGeo.setAttribute("position", new THREE.Float32BufferAttribute(ribbonPositions, 3));
+        hubGeo.setIndex(ribbonIndices);
+        hubGeo.computeVertexNormals();
 
-        // Plain solid color — no wrapped texture. Text baked into a texture that
-        // follows the curve's surface inevitably rotates with the curve's tangent
-        // direction (the loop's direction of travel changes by a full 360° around
-        // a figure-8), so letters tip sideways and upside-down at different points.
-        // Instead, the DevOps stage names are rendered as separate HTML labels
-        // below, repositioned every frame to track fixed points on the loop while
-        // staying upright in 2D screen space regardless of the loop's 3D orientation.
-        const torusMat = new THREE.MeshStandardMaterial({
-            color: 0x1D9E75,
-            roughness: 0.45,
-            metalness: 0.1,
+        // Plain solid royal blue — lit by the scene's lights for real shading
+        const hubMat = new THREE.MeshStandardMaterial({
+            color: HUB_COLOR,
+            roughness: 0.4,
+            metalness: 0.15,
             side: THREE.DoubleSide,
         });
-        const torus = new THREE.Mesh(torusGeo, torusMat);
-        // Mostly front-facing, like the reference DevOps logo — the curve itself
-        // already lies flat facing the camera (z=0 for every point), so only a
-        // small tilt is applied to show the ribbon has real depth rather than
-        // looking like a flat decal. No rotation animation: this stays static.
-        torus.rotation.x = Math.PI / 14;
-        scene.add(torus);
-
-        // --- DevOps stage anchor points — 8 fixed positions along the loop,
-        // one per lifecycle stage. Each gets an upright HTML label tracked via
-        // screen-space projection every frame (same technique as InfraTopology.jsx),
-        // which is what keeps the text legible and right-side-up no matter where
-        // along the curve it sits or how the loop is tilted.
-        const stageAnchors = DEVOPS_STAGES.map((label, i) => {
-            const t = i / DEVOPS_STAGES.length;
-            const p2d = lemniscatePoint(t);
-            // Push the anchor slightly outward from the ribbon's centerline so
-            // labels sit just outside the loop rather than overlapping it
-            const len = Math.sqrt(p2d.x * p2d.x + p2d.y * p2d.y) || 1;
-            const pushOut = 1.18;
-            return {
-                label,
-                localPos: new THREE.Vector3(p2d.x * pushOut, p2d.y * pushOut, 0),
-            };
-        });
+        const hub = new THREE.Mesh(hubGeo, hubMat);
+        // Slight tilt so the ribbon shows real depth rather than looking like
+        // a flat decal. Static — no rotation animation.
+        hub.rotation.x = Math.PI / 14;
+        scene.add(hub);
 
         // --- Card group (rotates as a whole — the "cylinder" of cards) ---
         const group = new THREE.Group();
         scene.add(group);
-
 
         const RADIUS = 7.5;
 
@@ -378,7 +335,7 @@ export default function ProjectGallery({ projects }) {
 
             group.add(mesh);
 
-            // Hub spoke — a line from the center (where the torus knot sits)
+            // Hub spoke — a line from the center (where the infinity loop sits)
             // out to this card's position. Lives inside `group` so it rotates
             // in lockstep with the cards and always tracks correctly.
             const spokeGeo = new THREE.BufferGeometry().setFromPoints([
@@ -395,7 +352,7 @@ export default function ProjectGallery({ projects }) {
             const nodeGeo = new THREE.SphereGeometry(0.07, 12, 12);
             const nodeMat = new THREE.MeshBasicMaterial({ color: accent });
             const node = new THREE.Mesh(nodeGeo, nodeMat);
-            node.position.copy(cardPos).multiplyScalar(0.94); // just in front of the card
+            node.position.copy(cardPos).multiplyScalar(0.94);
             group.add(node);
 
             // Subtle glow plane behind each card
@@ -412,7 +369,7 @@ export default function ProjectGallery({ projects }) {
             group.add(glow);
         });
 
-        // --- Drag-to-rotate (no click handling — this is a pure viewer now;
+        // --- Drag-to-rotate (no click handling — this is a pure viewer;
         // actual project links live in a list below the gallery, not on the cards) ---
         let isDragging = false;
         let lastX = 0;
@@ -447,7 +404,7 @@ export default function ProjectGallery({ projects }) {
         window.addEventListener("mouseup", onUp);
         window.addEventListener("mousemove", onMove);
 
-        // Wheel also rotates the gallery (feels like the reference's scroll-driven spiral)
+        // Wheel also rotates the gallery
         const onWheel = e => {
             e.preventDefault();
             velY = e.deltaY * 0.0006;
@@ -465,10 +422,8 @@ export default function ProjectGallery({ projects }) {
         };
         window.addEventListener("resize", onResize);
 
-        let t = 0;
         function animate() {
             animRef.current = requestAnimationFrame(animate);
-            t += 0.005;
 
             // Auto-rotation only applies when autoRotateRef.current is true —
             // toggled off automatically on first drag/scroll, or manually via the button.
@@ -477,9 +432,8 @@ export default function ProjectGallery({ projects }) {
             velY *= 0.92;
             group.rotation.y = rotY;
 
-            // The infinity loop stays completely static — no rotation at all —
-            // so it reads as a fixed logo badge facing the camera, like the
-            // reference DevOps symbol, rather than a spinning 3D object.
+            // The hub stays completely static — no rotation at all — so it
+            // reads as a fixed logo badge facing the camera.
 
             renderer.render(scene, camera);
         }
@@ -529,7 +483,6 @@ export default function ProjectGallery({ projects }) {
                 onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.15)"}
                 onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
             >
-                {/* Pause/play glyph swaps based on current state */}
                 {isAutoRotating ? (
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" /><rect x="14" y="5" width="4" height="14" /></svg>
                 ) : (
