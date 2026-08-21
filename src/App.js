@@ -24,6 +24,7 @@ function App() {
             <Route path="/resume" element={<Resume />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/about" element={<About />} />
+            <Route path="*" element={<div className="container content-panel py-5 text-center"><h1>Page not found</h1><p>The page you requested does not exist.</p></div>} />
           </Routes>
         </main>
 

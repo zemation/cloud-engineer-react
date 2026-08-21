@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 const jobs = [
   {
     company: "Bed Bath and Beyond",
+    title: "Cloud Infrastructure Engineer",
     date: "March 2021 – Present",
     bullets: [
       "Drove 99.99%+ system availability by managing critical cloud infrastructure, including OpenStack cluster networking and storage across compute, networking, and database tiers.",
@@ -13,6 +14,7 @@ const jobs = [
   },
   {
     company: "Ancestry",
+    title: "Network Operations Center Engineer",
     date: "August 2018 – February 2021",
     bullets: [
       "Ensured platform reliability via real-time monitoring and troubleshooting of mission-critical systems using New Relic and the AWS console.",
@@ -22,6 +24,7 @@ const jobs = [
   },
   {
     company: "Bluehost",
+    title: "Linux Systems Administrator",
     date: "October 2012 – October 2017",
     bullets: [
       "Optimized complex load and performance bottlenecks across Shared, Cloud, Reseller, and VPS hosting environments, maintaining 99.9%+ uptime.",
@@ -33,28 +36,34 @@ const jobs = [
 ];
 
 const certs = [
-  { label: "CompTIA A+", wip: false },
-  { label: "CompTIA Linux+", wip: false },
-  { label: "CompTIA Cloud+", wip: false },
-  { label: "CompTIA Security+", wip: false },
-  { label: "LPIC-1: Linux Administrator", wip: false },
-  { label: "AWS SysOps Administrator", expired: true },
-  { label: "Certified Kubernetes Administrator", wip: true },
-  { label: "AWS Cloud Practitioner", issued: "May 13, 2026" },
+  { label: "AWS Certified Cloud Practitioner", issued: "May 13, 2026", group: "active" },
+  { label: "CompTIA A+", group: "active" },
+  { label: "CompTIA Linux+", group: "active" },
+  { label: "LPIC-1: Linux Administrator", group: "active" },
+  { label: "AZ-900: Microsoft Azure Fundamentals", wip: true, group: "progress" },
+  { label: "Kubernetes and Cloud Native Associate (KCNA)", wip: true, group: "progress" },
+  { label: "AWS Certified SysOps Administrator – Associate", expired: true, group: "previous" },
+  { label: "CompTIA Cloud+", expired: true, group: "previous" },
+  { label: "CompTIA Security+", expired: true, group: "previous" },
 ];
 
 const skillCategories = {
-  Cloud: ["Cloud Computing", "Amazon Web Services", "Google Cloud Platform", "Openstack", "Infrastructure as a Service (IaaS)", "Cloud Panel"],
-  "Linux & OS": ["Linux Administration", "Linux", "Microsoft Windows", "System Administration"],
-  Containers: ["Containerization", "Kubernetes", "Docker"],
-  "Dev & Code": ["BASH", "Python", "PowerShell", "NodeJS", "Django", "Git", "Packer", "API", "Bootstrap", "Front-End Development"],
-  Ops: ["Troubleshooting", "Root Cause Analysis", "Problem Analysis", "Technical Support", "New Relic", "SSH", "Load Balancers", "Technical Documentation", "CPanel"],
-  "Soft Skills": ["Communication", "Problem Solving", "Analytical Skills"],
+  Cloud: ["OpenStack", "Amazon Web Services", "Google Cloud Platform", "Infrastructure as a Service (IaaS)", "Ceph"],
+  Containers: ["Kubernetes", "Docker"],
+  "Automation & IaC": ["Ansible", "Terraform", "Bash", "Python", "PowerShell", "Packer"],
+  Systems: ["Linux Administration", "System Administration", "Networking", "SSH", "Load Balancers"],
+  Observability: ["Prometheus", "Grafana", "Alertmanager", "New Relic", "Root Cause Analysis"],
+  Delivery: ["Jenkins", "GitHub Actions", "Git", "React", "Node.js"],
 };
 
 const allSkills = Object.entries(skillCategories).flatMap(([cat, skills]) =>
   skills.map((name) => ({ name, cat }))
 );
+
+const earlierExperience = [
+  { title: "Remote Support Engineer", company: "iTok / Bask", date: "2010 – 2012" },
+  { title: "Resolution Specialist", company: "Dell", date: "2007 – 2009" },
+];
 
 // --- Scroll reveal hook ---
 function useScrollReveal() {
@@ -120,7 +129,6 @@ function Timeline() {
         return (
           <div
             key={job.company}
-            onClick={() => setOpenIndex(isOpen ? -1 : i)}
             style={{
               position: "relative",
               marginBottom: i < jobs.length - 1 ? "2rem" : 0,
@@ -145,8 +153,17 @@ function Timeline() {
             />
 
             {/* header */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "8px" }}>
-              <span style={{ fontSize: "16px", fontWeight: 500 }}>{job.company}</span>
+            <button
+              type="button"
+              aria-expanded={isOpen}
+              aria-controls={`job-details-${i}`}
+              onClick={() => setOpenIndex(isOpen ? -1 : i)}
+              style={{ display: "flex", width: "100%", justifyContent: "space-between", alignItems: "flex-start", gap: "8px", padding: 0, border: 0, background: "transparent", color: "inherit", textAlign: "left", cursor: "pointer" }}
+            >
+              <span>
+                <span style={{ display: "block", fontSize: "16px", fontWeight: 600 }}>{job.title}</span>
+                <span style={{ display: "block", fontSize: "13px", color: "#6c757d", marginTop: "2px" }}>{job.company}</span>
+              </span>
               <span style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
                 <span style={{ fontSize: "12px", color: "#6c757d", paddingTop: "2px" }}>{job.date}</span>
                 <span
@@ -162,10 +179,11 @@ function Timeline() {
                   ▼
                 </span>
               </span>
-            </div>
+            </button>
 
             {/* expandable body */}
             <div
+              id={`job-details-${i}`}
               style={{
                 overflow: "hidden",
                 maxHeight: isOpen ? "600px" : "0px",
@@ -272,37 +290,52 @@ function SectionTitle({ children }) {
 // --- Main component ---
 const Resume = () => {
   return (
-    <div className="container p-4 shadow-lg w-50">
+    <div className="container p-4 shadow-lg content-panel">
 
       <RevealSection delay={0}>
+        <SectionTitle>Professional Summary</SectionTitle>
+        <p style={{ color: "#495057", lineHeight: 1.75, margin: 0 }}>
+          Cloud Infrastructure Engineer with 25+ years in IT and hands-on experience operating
+          production OpenStack, Kubernetes, AWS, and GCP environments. Focused on Linux,
+          infrastructure automation, observability, incident response, and highly available systems.
+        </p>
+      </RevealSection>
+
+      <RevealSection delay={60}>
         <SectionTitle>Experience</SectionTitle>
         <Timeline />
       </RevealSection>
 
-      <RevealSection delay={80}>
-        <SectionTitle>Certifications</SectionTitle>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-          {certs.map((c) => (
-            <div
-              key={c.label}
-              style={{
-                fontSize: "12px",
-                padding: "5px 12px",
-                borderRadius: "6px",
-                background: c.expired ? "#fff3cd" : "#f8f9fa",
-                border: c.wip ? "1px dashed #adb5bd" : c.expired ? "1px solid #ffc107" : "1px solid #dee2e6",
-                color: c.wip ? "#adb5bd" : c.expired ? "#856404" : "#6c757d",
-                fontStyle: c.wip ? "italic" : "normal",
-              }}
-            >
-              {c.wip ? `${c.label} (in progress)` : c.expired ? `${c.label} (expired)` : c.label}
+      <RevealSection delay={100}>
+        <SectionTitle>Earlier Experience</SectionTitle>
+        <div style={{ display: "grid", gap: "10px" }}>
+          {earlierExperience.map(role => (
+            <div key={`${role.company}-${role.date}`} style={{ display: "flex", justifyContent: "space-between", gap: "1rem", paddingBottom: "10px", borderBottom: "1px solid #edf0f2" }}>
+              <span><strong style={{ display: "block", fontSize: "14px" }}>{role.title}</strong><span style={{ color: "#6c757d", fontSize: "12px" }}>{role.company}</span></span>
+              <span style={{ color: "#6c757d", fontSize: "12px", whiteSpace: "nowrap" }}>{role.date}</span>
             </div>
           ))}
         </div>
       </RevealSection>
 
-      <RevealSection delay={160}>
-        <SectionTitle>Skills</SectionTitle>
+      <RevealSection delay={140}>
+        <SectionTitle>Certifications</SectionTitle>
+        {[{ key: "active", label: "Current" }, { key: "progress", label: "In progress" }, { key: "previous", label: "Previously held" }].map(group => (
+          <div key={group.key} style={{ marginBottom: "14px" }}>
+            <div style={{ fontSize: "11px", fontWeight: 600, color: "#6c757d", marginBottom: "7px" }}>{group.label}</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+              {certs.filter(c => c.group === group.key).map(c => (
+                <div key={c.label} style={{ fontSize: "12px", padding: "5px 12px", borderRadius: "6px", background: c.expired ? "#fff3cd" : "#f8f9fa", border: c.wip ? "1px dashed #adb5bd" : c.expired ? "1px solid #ffc107" : "1px solid #dee2e6", color: c.wip ? "#6c757d" : c.expired ? "#856404" : "#495057" }}>
+                  {c.label}{c.issued ? ` · issued ${c.issued}` : ""}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </RevealSection>
+
+      <RevealSection delay={180}>
+        <SectionTitle>Technical Skills</SectionTitle>
         <Skills />
       </RevealSection>
 

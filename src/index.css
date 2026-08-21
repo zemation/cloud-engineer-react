@@ -1,12 +1,139 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 
-h1 h2 h3 h4 h5 h6 {
+h1, h2, h3, h4, h5, h6 {
   font-family: "Orbitron", sans-serif;
+}
+
+.content-panel {
+  width: min(100% - 2rem, 900px) !important;
+  margin-inline: auto;
+}
+
+.hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: -0.5rem 0 1.5rem;
+  color: #8b949e;
+  font-size: 0.75rem;
+}
+
+.hero-proof span {
+  padding: 0.4rem 0.7rem;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+}
+
+.hero-proof strong { color: #e6edf3; }
+
+.hero-contact {
+  padding: 11px 26px;
+  border: 1px solid rgba(55,138,221,0.55);
+  border-radius: 8px;
+  color: #b5d4f4;
+  background: rgba(55,138,221,0.1);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.nav-dark { justify-content: space-between !important; align-items: center; }
+.nav-links { display: flex; gap: 4px; }
+.nav-identity { display: flex !important; flex-direction: column; padding: 0 !important; color: #fff !important; line-height: 1.2; }
+.nav-identity strong { font-size: 13px; }
+.nav-identity span { color: rgba(255,255,255,0.5); font-size: 10px; }
+
+.gallery-navigation {
+  position: absolute;
+  top: 50%;
+  display: flex;
+  transform: translateY(-50%);
+}
+
+.gallery-navigation-left { left: 14px; }
+.gallery-navigation-right { right: 14px; }
+
+.gallery-navigation button {
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 999px;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  color: rgba(255,255,255,0.78);
+  background: rgba(13,17,23,0.82);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.gallery-navigation button:hover { border-color: #378add; color: #fff; }
+
+.focused-project-details {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(200px, 0.8fr) minmax(280px, 1.2fr);
+  gap: 1.5rem;
+  margin: -0.5rem 0 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  color: #c9d1d9;
+  background: #0d1117;
+}
+
+.focused-project-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: 0;
+  color: #8b949e;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.focused-project-close:hover { color: #f0f6fc; }
+
+.focused-project-kicker { color: #58a6ff; font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase; }
+.focused-project-details h2 { margin: 5px 0 10px; color: #f0f6fc; font-size: 19px; }
+.focused-project-details p, .focused-project-details li { color: #8b949e; font-size: 12px; line-height: 1.6; }
+.focused-project-details ul { display: grid; gap: 6px; margin: 0; padding-left: 1.1rem; }
+.focused-project-links { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+.focused-project-links a { border: 1px solid #30363d; border-radius: 6px; padding: 6px 10px; color: #58a6ff; font-size: 11px; text-decoration: none; }
+
+@media (max-width: 640px) {
+  .nav-dark { padding-inline: 0.6rem !important; }
+  .nav-identity span { display: none; }
+  .nav-link-custom { padding-inline: 8px !important; font-size: 12px !important; }
+  .nav-link-custom::after { left: 8px !important; right: 8px !important; }
+  .gallery-navigation-left { left: 8px; }
+  .gallery-navigation-right { right: 8px; }
+  .focused-project-details { grid-template-columns: 1fr; }
+  .focused-project-links { grid-column: auto; }
+}
+
+.content-panel button:focus-visible,
+a:focus-visible,
+.nav-link-custom:focus-visible,
+[role="region"]:focus-visible {
+  outline: 3px solid #86b7fe;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 * {
   margin: 0;
   font-family: "Roboto", sans-serif;
 }
-

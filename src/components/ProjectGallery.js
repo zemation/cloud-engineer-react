@@ -1,20 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
-// --- Tag color map (mirrors Projects.js TAG_COLORS, used when drawing canvas textures) ---
-const TAG_COLORS = {
-    blue: { bg: "#0C447C", text: "#B5D4F4" },
-    teal: { bg: "#085041", text: "#9FE1CB" },
-    green: { bg: "#27500A", text: "#C0DD97" },
-    purple: { bg: "#3C3489", text: "#CECBF6" },
-    amber: { bg: "#633806", text: "#FAC775" },
-    coral: { bg: "#712B13", text: "#F5C4B3" },
-    warning: { bg: "#664d03", text: "#ffe69c" },
-    secondary: { bg: "#444441", text: "#D3D1C7" },
-};
-
 // --- Canvas texture builder ---
-// Draws a full project card — title, goal, bullet list, tags — onto an offscreen
+// Draws a full project card — title, goal, bullet list, and stats — onto an offscreen
 // <canvas>, which is then used as a texture on a Three.js plane mesh.
 // This is the standard way to render crisp text in WebGL without a font-loading
 // library — we let the browser's 2D canvas renderer do the text layout for us.
@@ -61,10 +49,9 @@ function buildCardTexture(project, accentHex) {
     ctx.stroke();
     cursorY += 32;
 
-    // Reserve space at the bottom for stats row (~36px) + tags (~50px)
-    // so bullets never collide with either
+    // Reserve space at the bottom for the key-fact stats row.
     const statsAreaHeight = (project.stats && project.stats.length) ? 44 : 0;
-    const bulletAreaBottom = H - 72 - statsAreaHeight;
+    const bulletAreaBottom = H - 34 - statsAreaHeight;
 
     // Bullet list — dynamically sized font/line-height so all bullets fit
     // regardless of how many a given project has (3 to 6 bullets across projects)
@@ -92,7 +79,7 @@ function buildCardTexture(project, accentHex) {
     // just above the tags. Fills the visual gap left by shorter bullet lists
     // with genuinely useful info (counts, tech choices) rather than blank space.
     if (project.stats && project.stats.length) {
-        const statsY = H - 72 - statsAreaHeight + 14;
+        const statsY = H - 34 - statsAreaHeight + 14;
 
         // Divider above the stats row, separating it from the bullet list
         ctx.strokeStyle = "rgba(255,255,255,0.1)";
@@ -124,35 +111,9 @@ function buildCardTexture(project, accentHex) {
         });
     }
 
-    // Tags as pill shapes, anchored to the bottom of the card
-    let tx = 36, ty = H - 56;
-    ctx.font = "500 16px 'Segoe UI', sans-serif";
-    project.tags.slice(0, 4).forEach(tag => {
-        const c = TAG_COLORS[tag.color] || TAG_COLORS.secondary;
-        const textW = ctx.measureText(tag.label).width;
-        const pillW = textW + 28;
-        if (tx + pillW > W - 36) { tx = 36; ty += 38; }
-        ctx.fillStyle = c.bg;
-        roundRect(ctx, tx, ty, pillW, 30, 15);
-        ctx.fill();
-        ctx.fillStyle = c.text;
-        ctx.fillText(tag.label, tx + 14, ty + 20);
-        tx += pillW + 10;
-    });
-
     const texture = new THREE.CanvasTexture(canvas);
     texture.needsUpdate = true;
     return texture;
-}
-
-function roundRect(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y, x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x, y + h, r);
-    ctx.arcTo(x, y + h, x, y, r);
-    ctx.arcTo(x, y, x + w, y, r);
-    ctx.closePath();
 }
 
 // Word-wrap for canvas text, with a max line count (ellipsis if exceeded).
@@ -195,6 +156,8 @@ const HUB_COLOR = 0x5B7FE8; // royal blue, lightened for better visibility under
 export default function ProjectGallery({ projects }) {
     const wrapRef = useRef(null);
     const animRef = useRef(null);
+    const navigationRef = useRef(null);
+    const activeIndexRef = useRef(0);
 
     // autoRotateRef is read inside the animation loop every frame — using a ref
     // (rather than state) means toggling it doesn't need to re-run the whole
@@ -202,11 +165,25 @@ export default function ProjectGallery({ projects }) {
     // button's label/icon updates visually; the two are kept in sync below.
     const autoRotateRef = useRef(true);
     const [isAutoRotating, setIsAutoRotating] = useState(true);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [showDetails, setShowDetails] = useState(false);
 
     const toggleAutoRotate = () => {
         autoRotateRef.current = !autoRotateRef.current;
         setIsAutoRotating(autoRotateRef.current);
     };
+
+    const stopAutoRotate = useCallback(() => {
+        autoRotateRef.current = false;
+        setIsAutoRotating(false);
+    }, []);
+
+    const focusProject = useCallback(direction => {
+        const next = (activeIndexRef.current + direction + projects.length) % projects.length;
+        navigationRef.current = next;
+        setShowDetails(false);
+        stopAutoRotate();
+    }, [projects.length, stopAutoRotate]);
 
     useEffect(() => {
         const wrap = wrapRef.current;
@@ -356,6 +333,7 @@ export default function ProjectGallery({ projects }) {
         scene.add(group);
 
         const RADIUS = 7.5;
+        const cardEntries = [];
 
         projects.forEach((project, i) => {
             const angle = (i / projects.length) * Math.PI * 2;
@@ -410,13 +388,19 @@ export default function ProjectGallery({ projects }) {
             glow.lookAt(0, 0, 0);
             glow.rotateY(Math.PI);
             group.add(glow);
+            cardEntries.push({ mesh, glow, angle });
         });
 
         // --- Drag-to-rotate (no click handling — this is a pure viewer;
         // actual project links live in a list below the gallery, not on the cards) ---
         let isDragging = false;
         let lastX = 0;
+        let pointerStartX = 0;
+        let pointerStartY = 0;
+        let pointerMoved = false;
         let rotY = 0, velY = 0;
+        const raycaster = new THREE.Raycaster();
+        const pointer = new THREE.Vector2();
 
         const onDown = e => {
             // Ignore drag-start if the click originated on the toggle button —
@@ -426,33 +410,57 @@ export default function ProjectGallery({ projects }) {
             if (e.target.closest("[data-gallery-control]")) return;
             isDragging = true;
             lastX = e.clientX;
+            pointerStartX = e.clientX;
+            pointerStartY = e.clientY;
+            pointerMoved = false;
+            wrap.setPointerCapture?.(e.pointerId);
             wrap.style.cursor = "grabbing";
             // Any deliberate interaction hands control to the user —
             // auto-rotation stops until they flip it back on via the toggle
-            autoRotateRef.current = false;
+            stopAutoRotate();
         };
-        const onUp = () => {
+        const onUp = e => {
+            const wasClick = !pointerMoved && Math.hypot(e.clientX - pointerStartX, e.clientY - pointerStartY) < 7;
             isDragging = false;
             wrap.style.cursor = "grab";
+            const rect = wrap.getBoundingClientRect();
+            pointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
+            raycaster.setFromCamera(pointer, camera);
+            const focusedMesh = cardEntries[activeIndexRef.current]?.mesh;
+            if (wasClick && e.target === wrap.querySelector("canvas") && focusedMesh && raycaster.intersectObject(focusedMesh).length > 0) {
+                stopAutoRotate();
+                setShowDetails(true);
+            }
         };
         const onMove = e => {
             if (!isDragging) return;
             const dx = e.clientX - lastX;
+            if (Math.hypot(e.clientX - pointerStartX, e.clientY - pointerStartY) >= 7) pointerMoved = true;
             velY = dx * 0.002;
             rotY += velY;
             lastX = e.clientX;
         };
 
-        wrap.addEventListener("mousedown", onDown);
-        window.addEventListener("mouseup", onUp);
-        window.addEventListener("mousemove", onMove);
+        const onKeyDown = e => {
+            if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+            e.preventDefault();
+            focusProject(e.key === "ArrowLeft" ? -1 : 1);
+        };
+
+        wrap.addEventListener("pointerdown", onDown);
+        window.addEventListener("pointerup", onUp);
+        window.addEventListener("pointermove", onMove);
+        wrap.addEventListener("keydown", onKeyDown);
 
         // Wheel also rotates the gallery
         const onWheel = e => {
+            // Preserve normal vertical page scrolling. Trackpads can rotate with
+            // a horizontal gesture, while drag/pointer controls work everywhere.
+            if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
             e.preventDefault();
-            velY = e.deltaY * 0.0006;
+            velY = e.deltaX * 0.0006;
             rotY += velY;
-            autoRotateRef.current = false;
+            stopAutoRotate();
         };
         wrap.addEventListener("wheel", onWheel, { passive: false });
 
@@ -465,7 +473,10 @@ export default function ProjectGallery({ projects }) {
         };
         window.addEventListener("resize", onResize);
 
+        const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
         let pulseT = 0;
+        const step = (Math.PI * 2) / projects.length;
+        const wrapIndex = value => ((value % projects.length) + projects.length) % projects.length;
         function animate() {
             animRef.current = requestAnimationFrame(animate);
             pulseT += 0.06;
@@ -473,14 +484,45 @@ export default function ProjectGallery({ projects }) {
             // Auto-rotation only applies when autoRotateRef.current is true —
             // toggled off automatically on first drag/scroll, or manually via the button.
             // Drag momentum (velY) still applies regardless, so flicks keep spinning briefly.
-            rotY += (autoRotateRef.current ? 0.0015 : 0) + velY;
+            rotY += (autoRotateRef.current && !reduceMotion ? 0.0015 : 0) + velY;
             velY *= 0.92;
+
+            if (navigationRef.current !== null) {
+                const baseTarget = -navigationRef.current * step;
+                const target = baseTarget + Math.round((rotY - baseTarget) / (Math.PI * 2)) * Math.PI * 2;
+                rotY += (target - rotY) * (reduceMotion ? 1 : 0.12);
+                if (Math.abs(target - rotY) < 0.001) {
+                    rotY = target;
+                    navigationRef.current = null;
+                }
+            } else if (!isDragging && !autoRotateRef.current && Math.abs(velY) < 0.0005) {
+                const target = Math.round(rotY / step) * step;
+                rotY += (target - rotY) * (reduceMotion ? 1 : 0.08);
+            }
+
             group.rotation.y = rotY;
+
+            const focusedIndex = wrapIndex(Math.round(-rotY / step));
+            if (focusedIndex !== activeIndexRef.current) {
+                activeIndexRef.current = focusedIndex;
+                setActiveIndex(focusedIndex);
+                setShowDetails(false);
+            }
+
+            cardEntries.forEach(({ mesh, glow, angle }, index) => {
+                const facing = Math.max(0, Math.cos(angle + rotY));
+                const targetScale = index === focusedIndex ? 1.1 : 0.9 + facing * 0.08;
+                const nextScale = mesh.scale.x + (targetScale - mesh.scale.x) * 0.12;
+                mesh.scale.setScalar(nextScale);
+                glow.scale.copy(mesh.scale);
+                mesh.material.opacity += ((index === focusedIndex ? 1 : 0.35 + facing * 0.35) - mesh.material.opacity) * 0.12;
+                glow.material.opacity += ((index === focusedIndex ? 0.3 : 0.06) - glow.material.opacity) * 0.12;
+            });
 
             // The hub stays completely static in rotation — no spin — but
             // gently pulsates in scale via a sine wave, giving it a subtle
             // sense of life without distracting from the cards.
-            const pulseScale = 1 + Math.sin(pulseT) * 0.04;
+            const pulseScale = reduceMotion ? 1 : 1 + Math.sin(pulseT) * 0.04;
             hub.scale.setScalar(pulseScale);
 
             renderer.render(scene, camera);
@@ -490,15 +532,27 @@ export default function ProjectGallery({ projects }) {
         return () => {
             cancelAnimationFrame(animRef.current);
             window.removeEventListener("resize", onResize);
-            window.removeEventListener("mouseup", onUp);
-            window.removeEventListener("mousemove", onMove);
-            wrap.removeEventListener("mousedown", onDown);
+            window.removeEventListener("pointerup", onUp);
+            window.removeEventListener("pointermove", onMove);
+            wrap.removeEventListener("pointerdown", onDown);
+            wrap.removeEventListener("keydown", onKeyDown);
             wrap.removeEventListener("wheel", onWheel);
+            scene.traverse(object => {
+                object.geometry?.dispose();
+                const materials = Array.isArray(object.material) ? object.material : [object.material];
+                materials.filter(Boolean).forEach(material => {
+                    material.map?.dispose();
+                    material.dispose();
+                });
+            });
+            renderer.renderLists?.dispose();
             renderer.dispose();
         };
-    }, [projects]);
+    }, [focusProject, projects, stopAutoRotate]);
 
+    const activeProject = projects[activeIndex] || projects[0];
     return (
+        <>
         <div
             ref={wrapRef}
             style={{
@@ -509,8 +563,12 @@ export default function ProjectGallery({ projects }) {
                 overflow: "hidden",
                 background: "#05070d",
                 cursor: "grab",
+                touchAction: "pan-y",
                 marginBottom: "1.5rem",
             }}
+            role="region"
+            aria-label="Interactive 3D project gallery. Drag horizontally to rotate, or select the focused card to view details."
+            tabIndex={0}
         >
             <canvas style={{ display: "block", width: "100%", height: "100%" }} />
 
@@ -518,6 +576,7 @@ export default function ProjectGallery({ projects }) {
                 data-gallery-control="auto-rotate-toggle"
                 onClick={toggleAutoRotate}
                 onMouseDown={e => e.stopPropagation()}
+                aria-pressed={isAutoRotating}
                 style={{
                     position: "absolute", top: "12px", right: "16px",
                     display: "flex", alignItems: "center", gap: "6px",
@@ -539,13 +598,39 @@ export default function ProjectGallery({ projects }) {
                 {isAutoRotating ? "Pause rotation" : "Auto-rotate"}
             </button>
 
+            <div className="gallery-navigation gallery-navigation-left" data-gallery-control="navigation">
+                <button type="button" onClick={() => focusProject(-1)} aria-label="Previous project">&#8592;</button>
+            </div>
+            <div className="gallery-navigation gallery-navigation-right" data-gallery-control="navigation">
+                <button type="button" onClick={() => focusProject(1)} aria-label="Next project">&#8594;</button>
+            </div>
+
             <div style={{
                 position: "absolute", bottom: "12px", right: "16px",
                 fontSize: "11px", color: "rgba(255,255,255,0.3)",
                 fontFamily: "inherit", pointerEvents: "none",
             }}>
-                drag · scroll to rotate
+                drag · horizontal scroll · arrow keys
             </div>
         </div>
+        {showDetails && activeProject && (
+            <section id="focused-project-details" className="focused-project-details">
+                <div>
+                    <span className="focused-project-kicker">Focused project</span>
+                    <h2>{activeProject.title}</h2>
+                    <p>{activeProject.goal}</p>
+                </div>
+                <button type="button" className="focused-project-close" onClick={() => setShowDetails(false)} aria-label="Close project details">&#215;</button>
+                <ul>
+                    {activeProject.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}
+                </ul>
+                <div className="focused-project-links">
+                    {[activeProject.link, activeProject.secondaryLink, activeProject.githubUrl, activeProject.secondaryGithubUrl].filter(Boolean).map(url => (
+                        <a key={url} href={url} target="_blank" rel="noopener noreferrer">{url.includes("github.com") ? "View repository" : "Visit live project"} &#8599;</a>
+                    ))}
+                </div>
+            </section>
+        )}
+        </>
     );
 }

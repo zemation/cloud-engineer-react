@@ -177,13 +177,12 @@ const CARDS = [
         bullets: [
             "DigitalOcean: provisions a droplet via the official provider, with cloud-init bootstrapping sysinfo on first boot.",
             "AWS: full environment — VPC, public subnet, IGW, route tables, security groups, IAM role, EC2 instance. Remote state in S3 with DynamoDB locking.",
-            "Azure: [add specifics — e.g. resource group, VNet, NSG, VM provisioning].",
-            "GCP: [add specifics — e.g. VPC network, firewall rules, Compute Engine instance].",
+            "Azure and GCP modules are scaffolded while provider-specific networking and compute resources are being implemented.",
             "Variables-driven across all four — image/SKU, size, and region configurable via .tfvars per provider.",
             "Each module published to its own GitHub repo (zemation/terraform-*) with cloud-init bootstrapping where supported.",
         ],
         stats: [
-            { label: "Providers", value: "4" },
+            { label: "Providers", value: "2 active · 2 WIP" },
             { label: "State backend", value: "S3 + DynamoDB" },
         ],
         githubUrl: "https://github.com/zemation/terraform-aws",
@@ -235,30 +234,44 @@ function SectionTitle({ children }) {
 // no visual cue on the card itself, silently does nothing for projects
 // without a link) so actual navigation lives here instead. ---
 function ProjectLinks({ projects }) {
-    const linkable = projects.filter(p => p.link || p.githubUrl || p.secondaryGithubUrl);
-    if (linkable.length === 0) return null;
-
     return (
+        <section aria-labelledby="project-details-title" style={{ marginTop: "2rem" }}>
+        <h2 id="project-details-title" style={{ fontSize: "20px", marginBottom: "6px" }}>Project case studies</h2>
+        <p style={{ color: "#6c757d", fontSize: "13px", lineHeight: 1.6, marginBottom: "1rem" }}>
+            Each project connects an operational problem to a working implementation. Repositories and live systems are linked where public.
+        </p>
         <div style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: "10px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: "14px",
             marginTop: "1.5rem",
         }}>
-            {linkable.map(p => (
+            {projects.map(p => (
                 <div
                     key={p.title}
                     style={{
                         border: "0.5px solid #dee2e6",
                         borderRadius: "10px",
-                        padding: "12px 14px",
+                        padding: "16px",
                         background: "#fff",
                     }}
                 >
-                    <div style={{ fontSize: "13px", fontWeight: 500, color: "#212529", marginBottom: "8px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", gap: "8px", alignItems: "flex-start", marginBottom: "8px" }}>
+                    <div style={{ fontSize: "14px", fontWeight: 600, color: "#212529" }}>
                         {p.title}
                     </div>
+                    <span style={{ fontSize: "10px", borderRadius: "999px", padding: "2px 7px", whiteSpace: "nowrap", color: p.tags.some(t => t.label === "WIP") ? "#856404" : "#0a3622", background: p.tags.some(t => t.label === "WIP") ? "#fff3cd" : "#d1e7dd" }}>
+                        {p.tags.some(t => t.label === "WIP") ? "In progress" : "Active"}
+                    </span>
+                    </div>
+                    <p style={{ fontSize: "12px", lineHeight: 1.55, color: "#6c757d", marginBottom: "10px" }}>{p.goal}</p>
+                    <div style={{ display: "flex", gap: "12px", marginBottom: "10px", padding: "8px", borderRadius: "7px", background: "#f8f9fa" }}>
+                        {p.stats?.map(stat => <span key={stat.label} style={{ fontSize: "11px", color: "#495057" }}><strong style={{ display: "block" }}>{stat.value}</strong>{stat.label}</span>)}
+                    </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                        {!p.link && !p.secondaryLink && !p.githubUrl && !p.secondaryGithubUrl && (
+                            <span style={{ fontSize: "11px", color: "#868e96" }}>Implementation details shown in the gallery.</span>
+                        )}
                         {p.link && (
                             <a
                                 href={p.link}
@@ -303,18 +316,40 @@ function ProjectLinks({ projects }) {
                 </div>
             ))}
         </div>
+        </section>
     );
 }
 
 // --- Main ---
 const Projects = () => {
+    const priority = [
+        "Kubernetes Cluster & Core Infrastructure",
+        "Terraform — Multi-Cloud Provisioning",
+        "Ansible Automation",
+        "Monitoring & Observability Stack",
+        "CI/CD Pipelines",
+        "Cobbler — PXE Boot Imaging",
+        "sysinfo — Go CLI Tool",
+        "Websites (Live)",
+    ];
+    const projects = CARDS
+        .filter(project => project.title !== "Certification Path")
+        .sort((a, b) => priority.indexOf(a.title) - priority.indexOf(b.title));
+
     return (
         <Container className="p-4 shadow-lg" style={{ maxWidth: "900px", width: "100%", margin: "0 auto" }}>
 
             <Reveal delay={0}>
                 <SectionTitle>Technical Projects & Labs</SectionTitle>
-                <ProjectGallery projects={CARDS} />
-                <ProjectLinks projects={CARDS} />
+                <div style={{ maxWidth: "680px", marginBottom: "1.25rem" }}>
+                    <h1 style={{ fontSize: "clamp(24px, 4vw, 34px)", marginBottom: "10px" }}>Infrastructure built to be operated</h1>
+                    <p style={{ color: "#6c757d", lineHeight: 1.7, margin: 0 }}>
+                        Hands-on work spanning bare-metal provisioning, Kubernetes, infrastructure as code,
+                        observability, and automated delivery. Explore the 3D overview, then review the implementation evidence below.
+                    </p>
+                </div>
+                <ProjectGallery projects={projects} />
+                <ProjectLinks projects={projects} />
             </Reveal>
 
         </Container>

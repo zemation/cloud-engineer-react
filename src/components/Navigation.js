@@ -63,8 +63,14 @@ const Navigation = () => {
         }
       `}</style>
 
-      <nav className="nav-dark">
-        <div style={{ display: "flex", gap: "4px" }}>
+      <nav className="nav-dark" aria-label="Primary navigation">
+        <LinkContainer to="/">
+          <Nav.Link className="nav-identity" aria-label="Robert Rodgers, Cloud Infrastructure Engineer — Home">
+            <strong>Robert Rodgers</strong>
+            <span>Cloud Infrastructure Engineer</span>
+          </Nav.Link>
+        </LinkContainer>
+        <div className="nav-links">
           {LINKS.map(({ to, label }) => {
             const isActive = pathname === to;
             return (

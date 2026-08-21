@@ -3,11 +3,9 @@ import { Container, Row, Col } from "react-bootstrap";
 
 // --- Typewriter hook ---
 const PHRASES = [
-  "Systems & Cloud Infrastructure Engineer",
-  "Linux Administrator",
-  "OpenStack Architect",
-  "AWS & GCP Operator",
-  "Problem Solver",
+  "Cloud Infrastructure Engineer",
+  "Linux & OpenStack Specialist",
+  "Automation & Reliability Engineer",
 ];
 
 function useTypewriter(phrases, typingSpeed = 65, deletingSpeed = 35, pause = 1800) {
@@ -97,13 +95,13 @@ const milestones = [
     desc: "Issued Jun 16, 2000. The certification that started it all.",
   },
   {
-    year: "2003",
+    year: "2007",
     type: "job",
     title: "Resolution Specialist — Dell",
     desc: "Mastered deep-dive hardware troubleshooting and enterprise customer service at Dell.",
   },
   {
-    year: "2008",
+    year: "2010",
     type: "job",
     title: "Remote Support Engineer — iTok/Bask",
     desc: "Provided high-level maintenance, software support, and malware remediation for diverse client systems.",
@@ -237,7 +235,6 @@ function CareerTimeline() {
         return (
           <div
             key={i}
-            onClick={() => setOpenIndex(isOpen ? null : i)}
             style={{ position: "relative", marginBottom: i < milestones.length - 1 ? "1.4rem" : 0, cursor: "pointer" }}
           >
             {/* dot */}
@@ -256,7 +253,7 @@ function CareerTimeline() {
             </div>
 
             {/* header */}
-            <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+            <button type="button" aria-expanded={isOpen} aria-controls={`milestone-details-${i}`} onClick={() => setOpenIndex(isOpen ? null : i)} style={{ display: "flex", width: "100%", alignItems: "center", gap: "6px", flexWrap: "wrap", padding: 0, border: 0, background: "transparent", textAlign: "left", cursor: "pointer" }}>
               <span style={{
                 fontSize: "11px", fontWeight: 500,
                 color: m.status === "expired" ? "#ffc107" : m.type === "cert" ? "#198754" : isOpen ? "#0d6efd" : "#adb5bd",
@@ -271,7 +268,7 @@ function CareerTimeline() {
                 transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
                 transition: "transform 0.3s", flexShrink: 0,
               }}>▼</span>
-            </div>
+            </button>
 
             {/* expandable desc */}
             <div style={{
@@ -280,7 +277,7 @@ function CareerTimeline() {
               opacity: isOpen ? 1 : 0,
               transition: "max-height 0.35s ease, opacity 0.3s ease",
               paddingLeft: "76px",
-            }}>
+            }} id={`milestone-details-${i}`}>
               <p style={{ fontSize: "13px", color: "#6c757d", lineHeight: 1.55, marginTop: "6px", marginBottom: 0 }}>
                 {m.desc}
               </p>
@@ -315,7 +312,7 @@ const About = () => {
   const text = useTypewriter(PHRASES);
 
   return (
-    <Container className="p-4 shadow-lg w-50">
+    <Container className="p-4 shadow-lg content-panel">
       <Row>
         <Col xs={12} md={3}>
           <div>
@@ -355,18 +352,15 @@ const About = () => {
             <section>
               <h2 style={{ fontSize: "18px", fontWeight: 500, marginBottom: "0.75rem" }}>About Me</h2>
               <p style={{ fontSize: "14px", color: "#495057", lineHeight: 1.7 }}>
-                Hello and welcome. My path into tech started in high school, tinkering with HTML before
-                most people knew what a website was. In 1999 I enrolled at Clearfield Job Corps Center to
-                pursue the computer trade formally, earning my CompTIA A+ in 2000 and setting the course
-                for everything that followed. That foundation — built from curiosity and hands-on learning —
-                has carried me through 25+ years of growth, from hardware bench work to managing large-scale
-                hybrid cloud infrastructure.
+                My path into technology started with HTML in high school. In 1999 I enrolled at Clearfield
+                Job Corps Center to pursue the computer trade, earning CompTIA A+ in 2000. That hands-on
+                foundation has carried me from hardware and systems support to Linux operations, production
+                monitoring, and large-scale hybrid-cloud infrastructure.
               </p>
               <p style={{ fontSize: "14px", color: "#495057", lineHeight: 1.7 }}>
-                From a local computer shop and Dell's enterprise resolution team, to remote support at
-                iTok/Bask, web hosting operations at Bluehost, the Ancestry NOC, and most recently
-                hybrid cloud engineering at Overstock/Bed Bath & Beyond — every role has added a new
-                layer to a career I've been building since day one.
+                Across Dell, iTok/Bask, Bluehost, Ancestry, and Overstock/Bed Bath & Beyond, I have built a
+                career around understanding how systems fail, making them easier to operate, and helping
+                teams respond with clarity when reliability matters.
               </p>
 
               <h3 style={{ fontSize: "14px", fontWeight: 500, color: "#6c757d", marginBottom: "0.75rem", marginTop: "1.25rem" }}>Outside the Terminal</h3>
@@ -376,14 +370,14 @@ const About = () => {
                 on purpose, test new tech, and sharpen skills without a production environment on the line.
               </p>
               <p style={{ fontSize: "14px", color: "#495057", lineHeight: 1.7 }}>
-                One thing that has always driven me, just as much as learning itself, is sharing what I know.  It's what's driving me to build cloud-master.io
+                One thing that has always driven me, just as much as learning itself, is sharing what I know. It's what drives me to build cloud-master.io.
                 Whether it's pointing someone toward the right resource, walking a colleague through a problem,
                 or contributing to documentation — helping others along their path is something I genuinely care about.
               </p>
               <p style={{ fontSize: "14px", color: "#495057", lineHeight: 1.7 }}>
                 I'm also a proud father of two young men who are nearly adults, which is somehow both
                 impressive and terrifying at the same time. When I'm not in the lab, you'll find me gaming or watching
-                whatever binge-worthy series I've convinced myself I'll finish this weekend.  For a brief look.
+                whatever binge-worthy series I've convinced myself I'll finish that weekend.
               </p>
             </section>
           </RevealSection>

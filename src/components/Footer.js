@@ -1,7 +1,7 @@
 import { Container, Row } from 'react-bootstrap';
 
 const LINKS = [
-  { href: "http://www.github.com/zemation", icon: "fa-brands fa-github", label: "GitHub" },
+  { href: "https://www.github.com/zemation", icon: "fa-brands fa-github", label: "GitHub" },
   { href: "https://www.linkedin.com/in/robertbrodgers", icon: "fa-brands fa-linkedin", label: "LinkedIn" },
   { href: "https://codepen.io/zemation", icon: "fa-brands fa-codepen", label: "CodePen" },
   { href: "https://www.freecodecamp.org/zemationx", icon: "fa-brands fa-free-code-camp", label: "freeCodeCamp" },

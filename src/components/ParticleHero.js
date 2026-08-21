@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import * as THREE from "three";
 
 // Particle count — reduced from 1200 to keep the field calm rather than dense
@@ -229,7 +230,7 @@ export default function ParticleHero() {
           marginBottom: "16px",
           fontFamily: "'Orbitron', sans-serif",
         }}>
-          A <span style={{ color: "#1D9E75" }}>Cloud</span> Engineer
+          Cloud <span style={{ color: "#1D9E75" }}>Infrastructure</span> Engineer
         </h1>
 
         <p style={{
@@ -239,15 +240,19 @@ export default function ParticleHero() {
           lineHeight: 1.7,
           marginBottom: "32px",
         }}>
-          A cloud and systems engineer focused on DevOps — building and
-          automating infrastructure with Ansible, monitoring it with
-          Prometheus and Grafana, shipping it through CI/CD pipelines,
-          and running it all on a self-hosted Kubernetes cluster.
+          Building reliable hybrid-cloud platforms with OpenStack, Kubernetes,
+          AWS, GCP, infrastructure automation, and production observability.
         </p>
 
+        <div className="hero-proof" aria-label="Professional highlights">
+          <span><strong>25+</strong> years in IT</span>
+          <span><strong>99.99%</strong> availability driven</span>
+          <span><strong>3</strong> cloud platforms</span>
+        </div>
+
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", justifyContent: "center", pointerEvents: "auto" }}>
-          <a
-            href="/projects"
+          <Link
+            to="/projects"
             style={{
               padding: "11px 26px", borderRadius: "8px",
               fontSize: "14px", fontWeight: 500,
@@ -259,9 +264,9 @@ export default function ParticleHero() {
             onMouseLeave={e => e.target.style.opacity = "1"}
           >
             View Projects
-          </a>
-          <a
-            href="/resume"
+          </Link>
+          <Link
+            to="/resume"
             style={{
               padding: "11px 26px", borderRadius: "8px",
               fontSize: "14px", fontWeight: 500,
@@ -275,11 +280,21 @@ export default function ParticleHero() {
             onMouseLeave={e => e.target.style.opacity = "1"}
           >
             Resume
+          </Link>
+          <a
+            href="https://www.linkedin.com/in/robertbrodgers"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-contact"
+          >
+            Contact Me
           </a>
         </div>
       </div>
 
-      <div
+      <button
+        type="button"
+        aria-label="Scroll to specialties"
         style={{
           position: "absolute",
           bottom: "28px",
@@ -291,6 +306,8 @@ export default function ParticleHero() {
           gap: "6px",
           cursor: "pointer",
           animation: "particleHeroBounce 2s ease-in-out infinite",
+          background: "transparent",
+          border: 0,
         }}
         onClick={() => {
           wrapRef.current?.nextElementSibling?.scrollIntoView({ behavior: "smooth" });
@@ -302,7 +319,7 @@ export default function ParticleHero() {
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b949e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M6 9l6 6 6-6" />
         </svg>
-      </div>
+      </button>
 
       <style>{`
                 @keyframes particleHeroBounce {

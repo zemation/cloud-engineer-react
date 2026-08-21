@@ -38,13 +38,13 @@ const SPECIALTIES = [
         <rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" />
       </svg>
     ),
-    title: "SysOps Admin",
-    footer: "Operating Systems",
+    title: "Systems Engineering",
+    footer: "Linux & Automation",
     stats: [
       { value: "25+", label: "Years experience" },
-      { value: "Maintained", label: "System Integrity" },
+      { value: "Linux", label: "Core platform" },
     ],
-    desc: "Certified Linux and Windows administrator. Proficient in PowerShell and BASH scripting for automation and system management.",
+    desc: "Operating reliable Linux and Windows environments, with Bash and PowerShell automation for repeatable system administration.",
     tags: ["Linux", "Windows", "BASH", "PowerShell"],
   },
   {
@@ -60,7 +60,7 @@ const SPECIALTIES = [
       { value: "3", label: "Cloud platforms" },
       { value: "99.99%", label: "Availability driven" },
     ],
-    desc: "Certified cloud professional focused on AWS, GCP, and OpenStack. Site reliability, IaaS/PaaS optimization, and hybrid cloud management.",
+    desc: "Operating hybrid-cloud infrastructure across AWS, GCP, and OpenStack, with Kubernetes, Ceph, reliability, and cost awareness at the center.",
     tags: ["AWS", "GCP", "OpenStack", "Kubernetes"],
   },
   {
@@ -70,14 +70,14 @@ const SPECIALTIES = [
         <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
       </svg>
     ),
-    title: "Web Developer",
-    footer: "Front End Web",
+    title: "Platform Delivery",
+    footer: "CI/CD & Web Systems",
     stats: [
-      { value: "20+", label: "Years with HTML/CSS" },
-      { value: "ReactJS", label: "Current stack" },
+      { value: "3", label: "CI/CD pipelines" },
+      { value: "React", label: "Current stack" },
     ],
-    desc: "Two decades of HTML and CSS experience, now building modern web applications with ReactJS, Bootstrap, and NodeJS.",
-    tags: ["ReactJS", "NodeJS", "Bootstrap", "HTML/CSS"],
+    desc: "Shipping web systems through Jenkins and GitHub Actions, backed by hands-on React, Node.js, deployment, and monitoring experience.",
+    tags: ["Jenkins", "GitHub Actions", "React", "Node.js"],
   },
 ];
 
@@ -177,11 +177,19 @@ const Home = () => {
             marginBottom: "2rem",
           }}>
             <p style={{ fontSize: "14px", color: "#6c757d", lineHeight: 1.8, margin: 0, textAlign: "center", maxWidth: "680px", marginLeft: "auto", marginRight: "auto" }}>
-              With over 25 years of experience in the technical field — starting with a CompTIA A+ and
-              spanning roles from local computer technician to Network Operations Center specialist to
-              managing Kubernetes clusters on OpenStack, AWS, and GCP — bringing a wealth of expertise
-              in hardware, Linux administration, cloud infrastructure, and front-end development.
+              Cloud infrastructure engineer with 25+ years in IT, progressing from hands-on systems support
+              and Linux hosting operations to production monitoring and hybrid-cloud engineering. I specialize
+              in reliable infrastructure, practical automation, observability, and making complex systems easier
+              for teams to operate.
             </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={240}>
+          <div style={{ textAlign: "center", padding: "1.75rem", marginBottom: "2rem", borderRadius: "12px", background: "#f8f9fa", border: "1px solid #e9ecef" }}>
+            <h2 style={{ fontSize: "20px", marginBottom: "8px" }}>Interested in working together?</h2>
+            <p style={{ color: "#6c757d", fontSize: "14px", marginBottom: "14px" }}>Connect with me to discuss cloud infrastructure, Linux, automation, or reliability engineering opportunities.</p>
+            <a href="https://www.linkedin.com/in/robertbrodgers" target="_blank" rel="noopener noreferrer" className="btn btn-primary">Connect on LinkedIn</a>
           </div>
         </Reveal>
 
