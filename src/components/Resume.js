@@ -4,7 +4,7 @@ const jobs = [
   {
     company: "Bed Bath and Beyond",
     title: "Cloud Infrastructure Engineer",
-    date: "March 2021 – Present",
+    date: "March 2021 – April 2026",
     bullets: [
       "Drove 99.99%+ system availability by managing critical cloud infrastructure, including OpenStack cluster networking and storage across compute, networking, and database tiers.",
       "Led cloud infrastructure optimization, implementing IaaS/PaaS solutions to enhance capabilities and reduce operational costs.",
