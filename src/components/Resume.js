@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
+import Reveal from "./Reveal";
 
 const jobs = [
   {
@@ -40,11 +41,15 @@ const certs = [
   { label: "CompTIA A+", group: "active" },
   { label: "CompTIA Linux+", group: "active" },
   { label: "LPIC-1: Linux Administrator", group: "active" },
+  { label: "CompTIA Systems Support Specialist (CSSS)", group: "active" },
+  { label: "CompTIA Cloud Essentials", group: "active" },
+  { label: "CIW Advanced HTML and CSS Specialist", group: "active" },
   { label: "AZ-900: Microsoft Azure Fundamentals", wip: true, group: "progress" },
   { label: "Kubernetes and Cloud Native Associate (KCNA)", wip: true, group: "progress" },
   { label: "AWS Certified SysOps Administrator – Associate", expired: true, group: "previous" },
   { label: "CompTIA Cloud+", expired: true, group: "previous" },
   { label: "CompTIA Security+", expired: true, group: "previous" },
+  { label: "CompTIA Secure Cloud Professional (CSCP)", expired: true, group: "previous" },
 ];
 
 const skillCategories = {
@@ -65,45 +70,12 @@ const earlierExperience = [
   { title: "Resolution Specialist", company: "Dell", date: "2007 – 2009" },
 ];
 
-// --- Scroll reveal hook ---
-function useScrollReveal() {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return { ref, visible };
-}
-
 // --- Section wrapper with fade-slide animation ---
 function RevealSection({ children, delay = 0 }) {
-  const { ref, visible } = useScrollReveal();
   return (
-    <div
-      ref={ref}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(28px)",
-        transition: `opacity 0.55s ease ${delay}ms, transform 0.55s ease ${delay}ms`,
-        marginBottom: "2.5rem",
-      }}
-    >
+    <Reveal delay={delay} style={{ marginBottom: "2.5rem" }}>
       {children}
-    </div>
+    </Reveal>
   );
 }
 
@@ -209,6 +181,9 @@ function Timeline() {
 // --- Skill filters ---
 function Skills() {
   const [activeFilter, setActiveFilter] = useState(null);
+  const visibleSkills = activeFilter
+    ? allSkills.filter((skill) => skill.cat === activeFilter)
+    : allSkills;
 
   return (
     <>
@@ -221,6 +196,7 @@ function Skills() {
             <button
               key={label}
               onClick={() => setActiveFilter(cat)}
+              aria-pressed={isActive}
               style={{
                 fontSize: "12px",
                 padding: "4px 12px",
@@ -240,28 +216,22 @@ function Skills() {
 
       {/* skill tags */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-        {allSkills.map((skill) => {
-          const isMatch = !activeFilter || skill.cat === activeFilter;
-          return (
-            <div
-              key={skill.name}
-              style={{
-                fontSize: "12px",
-                padding: "4px 10px",
-                borderRadius: "20px",
-                border: isMatch && activeFilter ? "1px solid #86b7fe" : "1px solid #dee2e6",
-                background: isMatch && activeFilter ? "#cfe2ff" : "#f8f9fa",
-                color: isMatch && activeFilter ? "#084298" : "#6c757d",
-                opacity: isMatch ? 1 : 0,
-                transform: isMatch ? "scale(1)" : "scale(0.85)",
-                pointerEvents: isMatch ? "auto" : "none",
-                transition: "opacity 0.2s, transform 0.2s, background 0.15s, color 0.15s, border-color 0.15s",
-              }}
-            >
-              {skill.name}
-            </div>
-          );
-        })}
+        {visibleSkills.map((skill) => (
+          <div
+            key={skill.name}
+            style={{
+              fontSize: "12px",
+              padding: "4px 10px",
+              borderRadius: "20px",
+              border: activeFilter ? "1px solid #86b7fe" : "1px solid #dee2e6",
+              background: activeFilter ? "#cfe2ff" : "#f8f9fa",
+              color: activeFilter ? "#084298" : "#6c757d",
+              transition: "background 0.15s, color 0.15s, border-color 0.15s",
+            }}
+          >
+            {skill.name}
+          </div>
+        ))}
       </div>
     </>
   );
@@ -290,7 +260,7 @@ function SectionTitle({ children }) {
 // --- Main component ---
 const Resume = () => {
   return (
-    <div className="container p-4 shadow-lg content-panel">
+    <div className="container p-4 mt-4 rounded-3 shadow-lg content-panel">
 
       <RevealSection delay={0}>
         <SectionTitle>Professional Summary</SectionTitle>

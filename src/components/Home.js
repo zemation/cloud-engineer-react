@@ -1,33 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import ParticleHero from "./ParticleHero";
-
-// --- Scroll reveal ---
-function useScrollReveal() {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setVisible(true); obs.unobserve(el); }
-    }, { threshold: 0.08 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return { ref, visible };
-}
-
-function Reveal({ children, delay = 0 }) {
-  const { ref, visible } = useScrollReveal();
-  return (
-    <div ref={ref} style={{
-      opacity: visible ? 1 : 0,
-      transform: visible ? "translateY(0)" : "translateY(22px)",
-      transition: `opacity 0.55s ease ${delay}ms, transform 0.55s ease ${delay}ms`,
-    }}>{children}</div>
-  );
-}
+import Reveal from "./Reveal";
 
 // --- Specialty blocks data ---
 const SPECIALTIES = [

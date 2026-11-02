@@ -1,29 +1,9 @@
-import { useState, useEffect, useRef } from "react";
 import { Container } from "react-bootstrap";
 import ProjectGallery from "./ProjectGallery";
+import Reveal from "./Reveal";
 
-// --- Data ---
+// --- Data (ordered by display priority) ---
 const CARDS = [
-    {
-        title: "Cobbler — PXE Boot Imaging",
-        goal: "Automated bare-metal OS provisioning for the home lab via network boot, eliminating manual installs.",
-        tags: [
-            { label: "Cobbler", color: "coral" },
-            { label: "PXE", color: "blue" },
-            { label: "Active", color: "green" },
-        ],
-        bullets: [
-            "Cobbler server configured to PXE-boot bare-metal nodes over the network — no USB installer required.",
-            "Automatically images the Dell Optiplex nodes that make up the Kubernetes cluster.",
-            "Kickstart/preseed profiles define the OS install non-interactively, ensuring every node starts from an identical baseline.",
-            "A node can be wiped and re-imaged from scratch in the time it takes to reboot and PXE-boot — useful when testing cluster rebuilds.",
-            "Sits underneath Ansible in the stack: Cobbler images the bare metal, then Ansible takes over for configuration and kubeadm setup.",
-        ],
-        stats: [
-            { label: "Boot method", value: "PXE" },
-            { label: "Nodes imaged", value: "3" },
-        ],
-    },
     {
         title: "Kubernetes Cluster & Core Infrastructure",
         goal: "Establish a self-hosted Kubernetes cluster for development and production workloads.",
@@ -44,62 +24,26 @@ const CARDS = [
         ],
     },
     {
-        title: "Monitoring & Observability Stack",
-        goal: "Deploy a comprehensive monitoring solution to track cluster health, node metrics, and external service availability.",
+        title: "Terraform — Multi-Cloud Provisioning",
+        goal: "Infrastructure-as-code modules provisioning compute environments across four cloud providers.",
         tags: [
-            { label: "Prometheus", color: "amber" },
-            { label: "Grafana", color: "amber" },
-            { label: "Active", color: "green" },
+            { label: "Terraform", color: "purple" },
+            { label: "Infrastructure", color: "blue" },
+            { label: "WIP", color: "amber" },
         ],
         bullets: [
-            "Running Prometheus, Grafana, and Alertmanager on a dedicated monitoring server.",
-            "Dashboards configured for Kubernetes cluster health, Digital Ocean droplet, and system metrics (Node Exporter Full).",
-            "Alertmanager integrated with Discord webhooks for real-time notifications.",
-            "Blackbox exporter monitors external site availability.",
+            "DigitalOcean: provisions a droplet via the official provider, with cloud-init bootstrapping sysinfo on first boot.",
+            "AWS: full environment — VPC, public subnet, IGW, route tables, security groups, IAM role, EC2 instance. Remote state in S3 with DynamoDB locking.",
+            "Azure and GCP modules are scaffolded while provider-specific networking and compute resources are being implemented.",
+            "Variables-driven across all four — image/SKU, size, and region configurable via .tfvars per provider.",
+            "Each module published to its own GitHub repo (zemation/terraform-*) with cloud-init bootstrapping where supported.",
         ],
         stats: [
-            { label: "Alerts via", value: "Discord" },
-            { label: "Exporters", value: "3" },
+            { label: "Providers", value: "2 active · 2 WIP" },
+            { label: "State backend", value: "S3 + DynamoDB" },
         ],
-    },
-    {
-        title: "CI/CD Pipelines",
-        goal: "Automated pipelines for building and deploying web applications on pull request merge.",
-        tags: [
-            { label: "Jenkins", color: "amber" },
-            { label: "Active", color: "green" },
-        ],
-        bullets: [
-            "Jenkins installed on a dedicated build server, managing all build and deploy pipelines.",
-            "acloudengineer.com: React app — pipeline triggers on PR submit, builds and deploys to Digital Ocean droplet.",
-            "cloud-master.io: separate Jenkinsfiles for the Vite/React frontend and Node.js backend.",
-            "Pipelines deploy via CloudPanel on the production droplet.",
-        ],
-        stats: [
-            { label: "Trigger", value: "PR merge" },
-            { label: "Pipelines", value: "3" },
-        ],
-    },
-    {
-        title: "Websites (Live)",
-        goal: "Public-facing sites serving content and API endpoints, hosted on a Digital Ocean droplet.",
-        tags: [
-            { label: "React", color: "teal" },
-            { label: "Node", color: "green" },
-            { label: "Active", color: "green" },
-        ],
-        bullets: [
-            "acloudengineer.com — built in React, deployed via Jenkins pipeline.",
-            "cloud-master.io — frontend in Vite/React, backend Node.js + MongoDB at api.cloud-master.io.",
-            "APM metrics for the Node backend wired into Grafana.",
-            "Content actively being added to cloud-master.io.",
-        ],
-        stats: [
-            { label: "Sites live", value: "2" },
-            { label: "Backend", value: "Node + Mongo" },
-        ],
-        link: "https://cloud-master.io",
-        secondaryLink: "https://www.acloudengineer.com",
+        githubUrl: "https://github.com/zemation/terraform-aws",
+        secondaryGithubUrl: "https://github.com/zemation/terraform-digital-ocean",
     },
     {
         title: "Ansible Automation",
@@ -125,6 +69,64 @@ const CARDS = [
         secondaryGithubUrl: "https://github.com/zemation/ansible-kubernetes",
     },
     {
+        title: "Monitoring & Observability Stack",
+        goal: "Deploy a comprehensive monitoring solution to track cluster health, node metrics, and external service availability.",
+        tags: [
+            { label: "Prometheus", color: "amber" },
+            { label: "Grafana", color: "amber" },
+            { label: "Active", color: "green" },
+        ],
+        bullets: [
+            "Running Prometheus, Grafana, and Alertmanager on a dedicated monitoring server.",
+            "Dashboards configured for Kubernetes cluster health, Digital Ocean droplet, and system metrics (Node Exporter Full).",
+            "Alertmanager integrated with Discord webhooks for real-time notifications.",
+            "Blackbox exporter monitors external site availability.",
+        ],
+        stats: [
+            { label: "Alerts via", value: "Discord" },
+            { label: "Exporters", value: "3" },
+        ],
+    },
+    {
+        title: "CI/CD Pipelines",
+        goal: "Automated pipelines for building and deploying web applications on merge to main.",
+        tags: [
+            { label: "GitHub Actions", color: "purple" },
+            { label: "Jenkins", color: "amber" },
+            { label: "Active", color: "green" },
+        ],
+        bullets: [
+            "Automated build and deployment workflows across GitHub Actions and Jenkins.",
+            "acloudengineer.com: React app — GitHub Actions workflow builds and deploys via rsync over SSH to DigitalOcean on merge to main.",
+            "cloud-master.io: automated pipelines for the Vite/React frontend and Node.js backend.",
+            "Pipelines deploy to production sites managed via CloudPanel on the production droplet.",
+        ],
+        stats: [
+            { label: "Trigger", value: "Merge to main" },
+            { label: "Pipelines", value: "3" },
+        ],
+    },
+    {
+        title: "Cobbler — PXE Boot Imaging",
+        goal: "Automated bare-metal OS provisioning for the home lab via network boot, eliminating manual installs.",
+        tags: [
+            { label: "Cobbler", color: "coral" },
+            { label: "PXE", color: "blue" },
+            { label: "Active", color: "green" },
+        ],
+        bullets: [
+            "Cobbler server configured to PXE-boot bare-metal nodes over the network — no USB installer required.",
+            "Automatically images the Dell Optiplex nodes that make up the Kubernetes cluster.",
+            "Kickstart/preseed profiles define the OS install non-interactively, ensuring every node starts from an identical baseline.",
+            "A node can be wiped and re-imaged from scratch in the time it takes to reboot and PXE-boot — useful when testing cluster rebuilds.",
+            "Sits underneath Ansible in the stack: Cobbler images the bare metal, then Ansible takes over for configuration and kubeadm setup.",
+        ],
+        stats: [
+            { label: "Boot method", value: "PXE" },
+            { label: "Nodes imaged", value: "3" },
+        ],
+    },
+    {
         title: "sysinfo — Go CLI Tool",
         goal: "A lightweight command-line tool for displaying system information, built as a Go learning project.",
         tags: [
@@ -147,75 +149,27 @@ const CARDS = [
         githubUrl: "https://github.com/zemation/sysinfo",
     },
     {
-        title: "Certification Path",
-        goal: "Progress through cloud and Kubernetes certifications to complement hands-on infrastructure experience.",
+        title: "Websites (Live)",
+        goal: "Public-facing sites serving content and API endpoints, hosted on a Digital Ocean droplet.",
         tags: [
-            { label: "Kubernetes", color: "teal" },
-            { label: "Cloud", color: "blue" },
-            { label: "In Progress", color: "warning" },
+            { label: "React", color: "teal" },
+            { label: "Node", color: "green" },
+            { label: "Active", color: "green" },
         ],
         bullets: [
-            "AWS Cloud Practitioner — passed May 13, 2026.",
-            "AZ-900 (Microsoft Azure Fundamentals) — in progress.",
-            "Kubernetes and Cloud Native Associate (KCNA) — in progress.",
-            "Certifications chosen to complement hands-on infrastructure work rather than replace it.",
-            "Next up: targeting a hands-on AWS associate-level certification once the multi-cloud Terraform work matures.",
+            "acloudengineer.com — built in React, deployed automatically via GitHub Actions.",
+            "cloud-master.io — frontend in Vite/React, backend Node.js + MongoDB at api.cloud-master.io.",
+            "APM metrics for the Node backend wired into Grafana.",
+            "Content actively being added to cloud-master.io.",
         ],
         stats: [
-            { label: "Passed", value: "1" },
-            { label: "In progress", value: "2" },
+            { label: "Sites live", value: "2" },
+            { label: "Backend", value: "Node + Mongo" },
         ],
-    },
-    {
-        title: "Terraform — Multi-Cloud Provisioning",
-        goal: "Infrastructure-as-code modules provisioning compute environments across four cloud providers.",
-        tags: [
-            { label: "Terraform", color: "purple" },
-            { label: "Infrastructure", color: "blue" },
-            { label: "WIP", color: "amber" },
-        ],
-        bullets: [
-            "DigitalOcean: provisions a droplet via the official provider, with cloud-init bootstrapping sysinfo on first boot.",
-            "AWS: full environment — VPC, public subnet, IGW, route tables, security groups, IAM role, EC2 instance. Remote state in S3 with DynamoDB locking.",
-            "Azure and GCP modules are scaffolded while provider-specific networking and compute resources are being implemented.",
-            "Variables-driven across all four — image/SKU, size, and region configurable via .tfvars per provider.",
-            "Each module published to its own GitHub repo (zemation/terraform-*) with cloud-init bootstrapping where supported.",
-        ],
-        stats: [
-            { label: "Providers", value: "2 active · 2 WIP" },
-            { label: "State backend", value: "S3 + DynamoDB" },
-        ],
-        githubUrl: "https://github.com/zemation/terraform-aws",
-        secondaryGithubUrl: "https://github.com/zemation/terraform-digital-ocean",
+        link: "https://cloud-master.io",
+        secondaryLink: "https://www.acloudengineer.com",
     },
 ];
-
-// --- Scroll reveal ---
-function useScrollReveal() {
-    const ref = useRef(null);
-    const [visible, setVisible] = useState(false);
-    useEffect(() => {
-        const el = ref.current;
-        if (!el) return;
-        const obs = new IntersectionObserver(([e]) => {
-            if (e.isIntersecting) { setVisible(true); obs.unobserve(el); }
-        }, { threshold: 0.08 });
-        obs.observe(el);
-        return () => obs.disconnect();
-    }, []);
-    return { ref, visible };
-}
-
-function Reveal({ children, delay = 0 }) {
-    const { ref, visible } = useScrollReveal();
-    return (
-        <div ref={ref} style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(22px)",
-            transition: `opacity 0.5s ease ${delay}ms, transform 0.5s ease ${delay}ms`,
-        }}>{children}</div>
-    );
-}
 
 // --- Section title ---
 function SectionTitle({ children }) {
@@ -322,22 +276,8 @@ function ProjectLinks({ projects }) {
 
 // --- Main ---
 const Projects = () => {
-    const priority = [
-        "Kubernetes Cluster & Core Infrastructure",
-        "Terraform — Multi-Cloud Provisioning",
-        "Ansible Automation",
-        "Monitoring & Observability Stack",
-        "CI/CD Pipelines",
-        "Cobbler — PXE Boot Imaging",
-        "sysinfo — Go CLI Tool",
-        "Websites (Live)",
-    ];
-    const projects = CARDS
-        .filter(project => project.title !== "Certification Path")
-        .sort((a, b) => priority.indexOf(a.title) - priority.indexOf(b.title));
-
     return (
-        <Container className="p-4 shadow-lg" style={{ maxWidth: "900px", width: "100%", margin: "0 auto" }}>
+        <Container className="p-4 mt-4 rounded-3 shadow-lg content-panel">
 
             <Reveal delay={0}>
                 <SectionTitle>Technical Projects & Labs</SectionTitle>
@@ -348,8 +288,8 @@ const Projects = () => {
                         observability, and automated delivery. Explore the 3D overview, then review the implementation evidence below.
                     </p>
                 </div>
-                <ProjectGallery projects={projects} />
-                <ProjectLinks projects={projects} />
+                <ProjectGallery projects={CARDS} />
+                <ProjectLinks projects={CARDS} />
             </Reveal>
 
         </Container>

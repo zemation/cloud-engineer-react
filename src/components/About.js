@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import Reveal from "./Reveal";
 
 // --- Typewriter hook ---
 const PHRASES = [
@@ -43,39 +44,6 @@ function useTypewriter(phrases, typingSpeed = 65, deletingSpeed = 35, pause = 18
   }, [charIndex, phraseIndex, phrases]);
 
   return displayed;
-}
-
-// --- Scroll reveal hook ---
-function useScrollReveal() {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.unobserve(el); } },
-      { threshold: 0.1 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-  return { ref, visible };
-}
-
-function RevealSection({ children, delay = 0 }) {
-  const { ref, visible } = useScrollReveal();
-  return (
-    <div
-      ref={ref}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(24px)",
-        transition: `opacity 0.55s ease ${delay}ms, transform 0.55s ease ${delay}ms`,
-      }}
-    >
-      {children}
-    </div>
-  );
 }
 
 // --- Career timeline data ---
@@ -127,6 +95,12 @@ const milestones = [
   {
     year: "2019",
     type: "cert",
+    title: "LPIC-1: Linux Administrator",
+    desc: "Issued Aug 14, 2019.",
+  },
+  {
+    year: "2019",
+    type: "cert",
     title: "CompTIA Systems Support Specialist (CSSS) — Stackable",
     desc: "Issued Aug 14, 2019.",
   },
@@ -146,7 +120,7 @@ const milestones = [
     year: "2021",
     type: "job",
     title: "Cloud Infrastructure Engineer — Overstock / Bed Bath & Beyond",
-    desc: "Managing hybrid cloud at scale — OpenStack, AWS, GCP, Kubernetes, Ceph, and Kolla Ansible.",
+    desc: "Managed hybrid cloud at scale (March 2021 – April 2026) — OpenStack, AWS, GCP, Kubernetes, Ceph, and Kolla Ansible.",
   },
   {
     year: "2021",
@@ -312,21 +286,21 @@ const About = () => {
   const text = useTypewriter(PHRASES);
 
   return (
-    <Container className="p-4 shadow-lg content-panel">
+    <Container className="p-4 mt-4 rounded-3 shadow-lg content-panel">
       <Row>
         <Col xs={12} md={3}>
-          <div>
+          <div className="mb-3 mb-md-0">
             <img
               id="avatar"
               src="/images/avatar.jpg"
               alt="Headshot"
-              className="img-fluid mx-auto"
+              className="img-fluid rounded-3 shadow-sm d-block mx-auto"
             />
           </div>
         </Col>
 
         <Col xs={12} md={9}>
-          <RevealSection delay={0}>
+          <Reveal delay={0}>
             {/* Typewriter headline */}
             <div style={{ marginBottom: "1.25rem" }}>
               <div style={{
@@ -346,9 +320,9 @@ const About = () => {
               </div>
             </div>
             <style>{`@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }`}</style>
-          </RevealSection>
+          </Reveal>
 
-          <RevealSection delay={100}>
+          <Reveal delay={100}>
             <section>
               <h2 style={{ fontSize: "18px", fontWeight: 500, marginBottom: "0.75rem" }}>About Me</h2>
               <p style={{ fontSize: "14px", color: "#495057", lineHeight: 1.7 }}>
@@ -380,14 +354,14 @@ const About = () => {
                 whatever binge-worthy series I've convinced myself I'll finish that weekend.
               </p>
             </section>
-          </RevealSection>
+          </Reveal>
         </Col>
       </Row>
 
       {/* Career Timeline — full width below */}
       <Row style={{ marginTop: "2rem" }}>
         <Col>
-          <RevealSection delay={150}>
+          <Reveal delay={150}>
             <div style={{
               fontSize: "11px", fontWeight: 500, letterSpacing: "0.09em",
               textTransform: "uppercase", color: "#6c757d",
@@ -397,7 +371,7 @@ const About = () => {
               Career Timeline
             </div>
             <CareerTimeline />
-          </RevealSection>
+          </Reveal>
         </Col>
       </Row>
     </Container>

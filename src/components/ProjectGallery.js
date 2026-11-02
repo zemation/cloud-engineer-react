@@ -572,6 +572,20 @@ export default function ProjectGallery({ projects }) {
         >
             <canvas style={{ display: "block", width: "100%", height: "100%" }} />
 
+            <div
+                aria-live="polite"
+                style={{
+                    position: "absolute", top: "12px", left: "16px",
+                    fontSize: "11px", color: "rgba(255,255,255,0.7)",
+                    background: "rgba(255,255,255,0.08)",
+                    border: "0.5px solid rgba(255,255,255,0.18)",
+                    borderRadius: "20px", padding: "5px 12px",
+                    fontFamily: "inherit", pointerEvents: "none",
+                }}
+            >
+                {activeIndex + 1} / {projects.length}
+            </div>
+
             <button
                 data-gallery-control="auto-rotate-toggle"
                 onClick={toggleAutoRotate}
@@ -610,7 +624,7 @@ export default function ProjectGallery({ projects }) {
                 fontSize: "11px", color: "rgba(255,255,255,0.3)",
                 fontFamily: "inherit", pointerEvents: "none",
             }}>
-                drag · horizontal scroll · arrow keys
+                click card for details · drag · horizontal scroll · arrow keys
             </div>
         </div>
         {showDetails && activeProject && (
